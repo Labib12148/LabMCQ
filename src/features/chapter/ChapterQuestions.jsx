@@ -14,7 +14,6 @@ import '@/styles/styles.css';
 // (removed unused: const modules = import.meta.glob('/src/data/**/*.json');)
 import { subjectConfig } from './ChapterClassifications';
 
-const letters = ['A', 'B', 'C', 'D'];
 const banglaMap = { A: 'ক', B: 'খ', C: 'গ', D: 'ঘ' };
 
 /* ---------- Image helper: baseDir-aware ---------- */
@@ -83,39 +82,8 @@ const SmartImage = ({ src, alt, className, baseDir }) => {
 };
 
 /*************************************************
- * Random & helpers
+ * Helpers
  *************************************************/
-function shuffleOptionsBalanced(q, targetLetter, rng) {
-  const remaining = letters.filter((L) => L !== targetLetter);
-  for (let i = remaining.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-  }
-
-  const ans = String(q.answer || '').toUpperCase();
-  const opt = (L) => q[`option${L}`] ?? '—';
-  const img = (L) => q[`option${L}_img`] ?? '';
-
-  const shuffledMap = {};
-  shuffledMap[targetLetter] = opt(ans);
-  shuffledMap[`${targetLetter}_img`] = img(ans);
-
-  const otherSrc = letters.filter((L) => L !== ans);
-  remaining.forEach((pos, i) => {
-    const src = otherSrc[i];
-    shuffledMap[pos] = opt(src);
-    shuffledMap[`${pos}_img`] = img(src);
-  });
-
-  return {
-    optionA: shuffledMap.A, optionA_img: shuffledMap.A_img,
-    optionB: shuffledMap.B, optionB_img: shuffledMap.B_img,
-    optionC: shuffledMap.C, optionC_img: shuffledMap.C_img,
-    optionD: shuffledMap.D, optionD_img: shuffledMap.D_img,
-    answer: targetLetter,
-  };
-}
-
 function avoidAdjacentChapters(arr) {
   const res = [...arr];
   for (let i = 1; i < res.length; i++) {
@@ -128,7 +96,7 @@ function avoidAdjacentChapters(arr) {
   return res;
 }
 
-// Keep explanation letters in sync with the current (shuffled) answer.
+// Keep explanation letters in sync with the current answer letter.
 function adaptExplanationText(expl, answerLetter) {
   if (!expl) return expl;
   let s = String(expl);
@@ -266,16 +234,8 @@ const useQuestionSelector = (subject, selectedChapters, count, mode) => {
 
       // ✅ Better variety: avoid back-to-back same-chapter questions
       selected = avoidAdjacentChapters(selected);
-
-      const letterCount = { A: 0, B: 0, C: 0, D: 0 };
-      const withBalancedOptions = selected.map((q) => {
-        const least = Object.entries(letterCount).sort((a, b) => a[1] - b[1])[0][0];
-        const mapped = shuffleOptionsBalanced(q, least, rng);
-        letterCount[least]++;
-        return { ...q, ...mapped };
-      });
-
-      if (isActive) { setQuestions(withBalancedOptions); setIsLoading(false); }
+      // Keep options in their original order (A–D)
+      if (isActive) { setQuestions(selected); setIsLoading(false); }
     };
 
     run();
