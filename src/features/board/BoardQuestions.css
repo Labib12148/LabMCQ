@@ -3,10 +3,10 @@
    =========================== */
 
 /* Import shared styles */
-@import '../styles/tokens.css';
-@import '../styles/cards.css';
-@import '../styles/buttons.css';
-@import '../styles/utilities.css';
+@import '@/styles/tokens.css';
+@import '@/styles/cards.css';
+@import '@/styles/buttons.css';
+@import '@/styles/utilities.css';
 
 /* Page background sync */
 html,

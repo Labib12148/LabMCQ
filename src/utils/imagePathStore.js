@@ -1,4 +1,4 @@
-// src/components/ImagePathStore.jsx
+// src/utils/imagePathStore.js
 let currentImagePath = '';
 
 /**

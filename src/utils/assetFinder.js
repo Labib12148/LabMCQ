@@ -1,5 +1,5 @@
-// src/components/AssetFinder.jsx
-import { getImageBasePath } from './ImagePathStore';
+// src/utils/assetFinder.js
+import { getImageBasePath } from './imagePathStore';
 
 // Use Vite's import.meta.glob to statically identify all possible assets.
 // 'eager: true' imports the modules directly, giving us the final URL.

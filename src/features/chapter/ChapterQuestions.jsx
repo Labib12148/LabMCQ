@@ -4,11 +4,11 @@ import { CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 import seedrandom from 'seedrandom';
 
 // Shared components & utils
-import MathText from '../components/MathText';
-import { getAssetPath } from '../components/AssetFinder';
+import { MathText } from '@/components';
+import { getAssetPath } from '@/utils';
 
 // Styles (same path as DisplayQuestions)
-import '../styles/styles.css';
+import '@/styles/styles.css';
 
 // Data
 // (removed unused: const modules = import.meta.glob('/src/data/**/*.json');)
@@ -16,17 +16,6 @@ import { subjectConfig } from './ChapterClassifications';
 
 const letters = ['A', 'B', 'C', 'D'];
 const banglaMap = { A: 'ক', B: 'খ', C: 'গ', D: 'ঘ' };
-
-/*************************************************
- * Utils
- *************************************************/
-function stringHash(str) {
-  let h = 5381;
-  for (let i = 0; i < str.length; i++) h = ((h << 5) + h) ^ str.charCodeAt(i);
-  return (h >>> 0).toString(16);
-}
-
-const rngFrom = (seed) => seedrandom(seed);
 
 /* ---------- Image helper: baseDir-aware ---------- */
 const SmartImage = ({ src, alt, className, baseDir }) => {
@@ -45,7 +34,7 @@ const SmartImage = ({ src, alt, className, baseDir }) => {
     const isAbs = /^https?:\/\//i.test(clean) || /^data:/i.test(clean);
     if (isAbs) return [clean];
 
-    try { list.push(getAssetPath(clean)); } catch (_) {}
+    try { list.push(getAssetPath(clean)); } catch { /* ignore missing asset */ }
 
     if (baseDir && !clean.startsWith('/')) {
       const bd = baseDir.endsWith('/') ? baseDir : baseDir + '/';
@@ -407,7 +396,7 @@ const PracticeList = ({ questions, persistKey }) => {
 
   // Persist on changes
   useEffect(() => {
-    try { if (persistKey) localStorage.setItem(persistKey, JSON.stringify(chosen)); } catch {}
+    try { if (persistKey) localStorage.setItem(persistKey, JSON.stringify(chosen)); } catch { /* ignore */ }
   }, [persistKey, chosen]);
 
   // Load when key changes

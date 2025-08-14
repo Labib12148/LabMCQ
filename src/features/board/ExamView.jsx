@@ -1,12 +1,11 @@
 // src/BoardQuestions/ExamView.jsx
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Clock, CheckCircle, XCircle, RefreshCw, HelpCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/styles.css';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
+import '@/styles/styles.css';
 import ResultMCQItem from './ResultMCQItem';
-import MathText from '../components/MathText';
-import { getAssetPath } from '../components/AssetFinder';
-import CountdownTimer from '../components/CountdownTimer';
+import { MathText, CountdownTimer } from '@/components';
+import { getAssetPath } from '@/utils';
 
 // --- Animation Variants ---
 const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.07 } } };
@@ -17,7 +16,7 @@ const shakeVariant = { shake: { x: [0, -8, 8, -8, 8, 0], transition: { duration:
 const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="modal-overlay">
-            <motion.div className="modal-content" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}>
+            <Motion.div className="modal-content" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}>
                 <HelpCircle size={48} className="text-indigo-400 mx-auto mb-4" />
                 <h3 className="modal-title">আপনি কি নিশ্চিত?</h3>
                 <p className="modal-message">{message}</p>
@@ -25,7 +24,7 @@ const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
                     <button onClick={onCancel} className="modal-button cancel">ফিরে যান</button>
                     <button onClick={onConfirm} className="modal-button confirm">জমা দিন</button>
                 </div>
-            </motion.div>
+            </Motion.div>
         </div>
     );
 };
@@ -44,7 +43,7 @@ const ExamStartScreen = ({ boardName, onStartExam }) => {
     };
     return (
         <div className="flex items-center justify-center h-full p-4">
-            <motion.div className="exam-start-container" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
+            <Motion.div className="exam-start-container" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
                 <h2 className="text-2xl font-bold mb-4">{boardName} - পরীক্ষা</h2>
                 <div className="my-6 space-y-4">
                     <label className="block font-semibold text-gray-700 dark:text-gray-300 mb-1">মোট সময়</label>
@@ -55,7 +54,7 @@ const ExamStartScreen = ({ boardName, onStartExam }) => {
                     </div>
                 </div>
                 <button type="button" onClick={handleStart} className="start-exam-button mt-6">পরীক্ষা শুরু করুন</button>
-            </motion.div>
+            </Motion.div>
         </div>
     );
 };
@@ -73,9 +72,9 @@ const ActiveExam = ({ questions, time, totalTime, answers, handleAnswer, submitE
           <div className="h-full bg-green-500 transition-all duration-500" style={{ width: `${(time / totalTime) * 100}%` }}/>
         </div>
       </div>
-      <motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
+      <Motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
         {questions.map((mcq, idx) => (
-          <motion.div key={mcq.number} className="exam-question" variants={itemVariants}>
+          <Motion.div key={mcq.number} className="exam-question" variants={itemVariants}>
             <div className="question-container">
               <div className="mcq-number-circle">{(idx + 1).toLocaleString('bn-BD')}</div>
               <div className="question-text">
@@ -85,18 +84,18 @@ const ActiveExam = ({ questions, time, totalTime, answers, handleAnswer, submitE
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {['A', 'B', 'C', 'D'].map((opt, optionIdx) => (
-                <motion.button key={opt} type="button" onClick={() => handleAnswer(mcq.number, opt)} className={`exam-option-btn ${answers[mcq.number] === opt ? 'selected' : ''}`} variants={shakeVariant} animate={answers[mcq.number] === opt && answers[mcq.number] !== mcq.answer ? "shake" : ""} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                <Motion.button key={opt} type="button" onClick={() => handleAnswer(mcq.number, opt)} className={`exam-option-btn ${answers[mcq.number] === opt ? 'selected' : ''}`} variants={shakeVariant} animate={answers[mcq.number] === opt && answers[mcq.number] !== mcq.answer ? "shake" : ""} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                   <div className="option-label-circle">{['ক', 'খ', 'গ', 'ঘ'][optionIdx]}</div>
                   <div className="option-text">
                     <MathText text={mcq[`option${opt}`]} />
                     {mcq[`option${opt}_img`] && <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image mt-2" />}
                   </div>
-                </motion.button>
+                </Motion.button>
               ))}
             </div>
-          </motion.div>
+          </Motion.div>
         ))}
-      </motion.div>
+      </Motion.div>
       <div className="flex justify-center mt-8 mb-14">
         <button type="button" onClick={submitExam} className="submit-exam-button">পরীক্ষা জমা দিন</button>
       </div>
@@ -116,7 +115,7 @@ const ExamResults = ({ questions, answers, onTryAgain }) => {
     }, []);
 
     return (
-        <motion.div ref={resultsRef} className="results-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <Motion.div ref={resultsRef} className="results-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <h2 className="text-2xl font-bold text-center mb-4">পরীক্ষার ফলাফল</h2>
             <div className="flex justify-around mb-6">
                 <div className="text-center">
@@ -144,7 +143,7 @@ const ExamResults = ({ questions, answers, onTryAgain }) => {
                     ))}
                 </div>
             </div>
-        </motion.div>
+        </Motion.div>
     );
 };
 
@@ -199,11 +198,11 @@ const ExamView = ({ questions, boardName, onTryAgain }) => {
     return (
         <>
             <AnimatePresence mode="wait">
-                <motion.div key={examState} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Motion.div key={examState} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     {examState === 'notStarted' && <ExamStartScreen boardName={boardName} onStartExam={startExam} />}
                     {examState === 'active' && <ActiveExam questions={questions} time={time} totalTime={initialTime} answers={answers} handleAnswer={handleAnswer} submitExam={submitExam} />}
                     {examState === 'finished' && <ExamResults questions={questions} answers={answers} onTryAgain={resetExam} />}
-                </motion.div>
+                </Motion.div>
             </AnimatePresence>
             <AnimatePresence>
                 {isModalOpen && (

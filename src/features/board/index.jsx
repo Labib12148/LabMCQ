@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2, Search } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import DisplayQuestions from './DisplayQuestions';
 import ExamView from './ExamView';
 import ViewType from './ViewType';
@@ -12,7 +12,7 @@ import {
     parseUrlState,
     findSubjectFromBoardId
 } from './classifications';
-import { setImageBasePath } from '../components/ImagePathStore';
+import { setImageBasePath } from '@/utils';
 
 const modules = import.meta.glob('/src/data/**/*.json');
 
@@ -183,20 +183,20 @@ const BoardQuestions = () => {
             {filteredBoardGroups.length === 0 ? (
                 <div className="text-center text-gray-500 mt-10">কোনো বোর্ড খুঁজে পাওয়া যায়নি।</div>
             ) : (
-                <motion.div variants={listContainerVariants} initial="hidden" animate="visible">
+                <Motion.div variants={listContainerVariants} initial="hidden" animate="visible">
                     {filteredBoardGroups.map(({ group, boards }) => (
                         <div key={group} className="mb-8">
                             <h3 className="board-group-title">{group}</h3>
-                            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto" variants={listContainerVariants}>
+                            <Motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto" variants={listContainerVariants}>
                                 {boards.map(board => (
-                                    <motion.button type="button" key={board.id} onClick={() => handleBoardSelect(board)} className="board-button w-full" variants={listItemVariants}>
+                                    <Motion.button type="button" key={board.id} onClick={() => handleBoardSelect(board)} className="board-button w-full" variants={listItemVariants}>
                                         {board.name}
-                                    </motion.button>
+                                    </Motion.button>
                                 ))}
-                            </motion.div>
+                            </Motion.div>
                         </div>
                     ))}
-                </motion.div>
+                </Motion.div>
             )}
         </div>
     );
@@ -204,19 +204,19 @@ const BoardQuestions = () => {
     const renderSubjectView = () => (
         <div className="w-full min-h-screen flex flex-col items-center p-4 md:p-6 pt-24">
             <div className="w-full max-w-6xl">
-                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="hero-section">
+                <Motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="hero-section">
                     <h1 className="hero-title">বিষয় বাছাই করুন</h1>
                     <p className="hero-subtitle">অনুশীলন অথবা পরীক্ষার জন্য একটি বিষয় বাছাই করুন।</p>
-                </motion.div>
+                </Motion.div>
                 
-                <motion.div 
+                <Motion.div 
                     className="subject-grid" 
                     variants={listContainerVariants} 
                     initial="hidden" 
                     animate="visible"
                 >
                     {Object.entries(subjectConfig).map(([key, { icon, displayName }]) => (
-                        <motion.button
+                        <Motion.button
                             type="button"
                             key={key}
                             onClick={() => handleSubjectSelect(key)}
@@ -226,9 +226,9 @@ const BoardQuestions = () => {
                         >
                             {icon}
                             <span className="text-xl sm:text-2xl font-bold mt-4">{displayName}</span>
-                        </motion.button>
+                        </Motion.button>
                     ))}
-                </motion.div>
+                </Motion.div>
             </div>
         </div>
     );
@@ -247,7 +247,7 @@ const BoardQuestions = () => {
             </AnimatePresence>
 
             <AnimatePresence mode="wait">
-                <motion.main
+                <Motion.main
                     key={view}
                     variants={pageVariants}
                     initial="initial"
@@ -259,7 +259,7 @@ const BoardQuestions = () => {
                     {view === 'questions' && renderQuestionView()}
                     {view === 'boards' && subject && renderBoardView()}
                     {view === 'subjects' && renderSubjectView()}
-                </motion.main>
+                </Motion.main>
             </AnimatePresence>
         </>
     );

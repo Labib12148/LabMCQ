@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import MathText from '../components/MathText';
-import { getAssetPath } from '../components/AssetFinder';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { MathText } from '@/components';
+import { getAssetPath } from '@/utils';
 
 // This component is modeled after the one in BoardQuestions to show exam results.
 const ResultMCQItem = ({ question, userAnswer, index }) => {
@@ -18,7 +18,7 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
     };
 
     return (
-        <motion.div
+        <Motion.div
             className="result-item-card"
             role="group"
             aria-label={`Result for question ${index}`}
@@ -53,7 +53,7 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
                     </button>
                     <AnimatePresence>
                         {showExplanation && (
-                            <motion.div
+                            <Motion.div
                                 className="explanation-content"
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
@@ -67,12 +67,12 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
                                         <MathText text={question.explanation} />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </Motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             )}
-        </motion.div>
+        </Motion.div>
     );
 };
 

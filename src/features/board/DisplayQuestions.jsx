@@ -1,10 +1,10 @@
 // src/BoardQuestions/DisplayQuestions.jsx
 import React, { useState, useMemo, useEffect } from 'react';
 import { CheckCircle, HelpCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import MathText from '../components/MathText';
-import '../styles/styles.css';
-import { getAssetPath } from '../components/AssetFinder';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { MathText } from '@/components';
+import '@/styles/styles.css';
+import { getAssetPath } from '@/utils';
 
 // Animations
 const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
@@ -25,7 +25,7 @@ const ProgressBar = ({ current, total }) => {
   const percentage = total > 0 ? (current / total) * 100 : 0;
   return (
     <div className="progress-bar-container" role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100">
-      <motion.div
+      <Motion.div
         className="progress-bar-fill"
         initial={{ width: 0 }}
         animate={{ width: `${percentage}%` }}
@@ -49,7 +49,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
   };
 
   return (
-    <motion.article className="mcq-card" variants={itemVariants} role="group" aria-label={`MCQ ${index}`}>
+    <Motion.article className="mcq-card" variants={itemVariants} role="group" aria-label={`MCQ ${index}`}> 
       <div className="mcq-header">
         <div className="mcq-question-number">{index.toLocaleString('bn-BD')}</div>
         <div className="mcq-question-text">
@@ -82,7 +82,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
 
       <AnimatePresence>
         {hasAnswered && mode === 'practice' && (
-          <motion.div
+      <Motion.div
             className="mcq-feedback"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +99,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
                 </>
               )}
             </p>
-          </motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
 
@@ -115,7 +115,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
 
           <AnimatePresence>
             {showExplanation && (
-              <motion.div
+          <Motion.div
                 className="mcq-explanation"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -128,12 +128,12 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
                 <div className="explanation-body">
                   <MathText text={mcq.explanation} />
                 </div>
-              </motion.div>
+              </Motion.div>
             )}
           </AnimatePresence>
         </div>
       )}
-    </motion.article>
+    </Motion.article>
   );
 };
 
@@ -179,7 +179,7 @@ const DisplayQuestions = ({ questions, boardName, mode }) => {
 
         {mode === 'practice' && <ProgressBar current={answeredCount} total={questions.length} />}
 
-        <motion.section initial="hidden" animate="visible" transition={{ staggerChildren: 0.08 }} className="practice-list">
+        <Motion.section initial="hidden" animate="visible" transition={{ staggerChildren: 0.08 }} className="practice-list">
           {questions.map((mcq, idx) => (
             <MCQItem
               key={`${boardName}-${mcq.number ?? idx}`}
@@ -190,7 +190,7 @@ const DisplayQuestions = ({ questions, boardName, mode }) => {
               mode={mode}
             />
           ))}
-        </motion.section>
+        </Motion.section>
 
         <div className="other-board-btn-wrapper">
           <a href="#" className="other-board-btn" onClick={(e) => e.preventDefault()}>

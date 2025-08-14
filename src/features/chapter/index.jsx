@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AnimatePresence, motion as m } from 'framer-motion';
+import { AnimatePresence, motion as Motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 
 import { chapterNames, loadChaptersForSubject, subjectConfig } from './ChapterClassifications';
@@ -29,7 +29,7 @@ const useLocalStorage = (key, initialValue) => {
       const v = value instanceof Function ? value(storedValue) : value;
       setStoredValue(v);
       if (typeof window !== 'undefined') window.localStorage.setItem(key, JSON.stringify(v));
-    } catch {}
+    } catch { /* ignore */ }
   };
   return [storedValue, setValue];
 };
@@ -54,9 +54,9 @@ const ChapterWise = () => {
           <ChapterSelection key="chapters" subject={subject} />
         )}
         {currentView === 'questions' && (
-          <m.div key="questions" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition}>
+          <Motion.div key="questions" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition}>
             <QuestionSession subject={subject} chapterParams={chapterParams} routeMode={mode} />
-          </m.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -69,14 +69,14 @@ const ChapterWise = () => {
 const SubjectSelection = () => {
   const navigate = useNavigate();
   return (
-    <m.main className="cw-page" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition}>
+    <Motion.main className="cw-page" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition}>
       <header className="cw-hero">
         <h1 className="cw-hero-title">অধ্যায়ভিত্তিক অনুশীলন</h1>
         <p className="cw-hero-subtitle">বিষয় বেছে নিন → অধ্যায় নির্বাচন করুন → অনুশীলন শুরু করুন।</p>
       </header>
-      <m.div className="subject-grid" variants={listContainerVariants} initial="hidden" animate="visible">
+      <Motion.div className="subject-grid" variants={listContainerVariants} initial="hidden" animate="visible">
         {Object.entries(subjectConfig).map(([key, { icon, displayName }]) => (
-          <m.button
+          <Motion.button
             key={key}
             className="subject-card"
             variants={listItemVariants}
@@ -85,10 +85,10 @@ const SubjectSelection = () => {
           >
             <div className="subject-icon">{icon}</div>
             <span className="subject-name">{displayName}</span>
-          </m.button>
+          </Motion.button>
         ))}
-      </m.div>
-    </m.main>
+      </Motion.div>
+    </Motion.main>
   );
 };
 
@@ -167,7 +167,7 @@ const ChapterSelection = ({ subject }) => {
   );
 
   return (
-    <m.section
+    <Motion.section
       className={`cw-page ${selected.length > 0 ? 'with-cta' : ''}`}
       variants={pageVariants}
       initial="initial"
@@ -218,11 +218,11 @@ const ChapterSelection = ({ subject }) => {
       {isLoading ? (
         <div className="cw-loading-indicator">লোড হচ্ছে...</div>
       ) : (
-        <m.div className="chapter-grid" variants={listContainerVariants} initial="hidden" animate="visible">
+        <Motion.div className="chapter-grid" variants={listContainerVariants} initial="hidden" animate="visible">
           {chapters.map((cid) => {
             const isSelected = selected.includes(cid);
             return (
-              <m.button
+              <Motion.button
                 key={cid}
                 className={`chapter-card ${isSelected ? 'selected' : ''}`}
                 variants={listItemVariants}
@@ -236,15 +236,15 @@ const ChapterSelection = ({ subject }) => {
                 <span className="chapter-name">
                   {chapterNames[subject]?.[cid] || `অধ্যায় ${cid}`}
                 </span>
-              </m.button>
+              </Motion.button>
             );
           })}
-        </m.div>
+        </Motion.div>
       )}
 
       <AnimatePresence>
         {selected.length > 0 && (
-          <m.div
+          <Motion.div
             className="cw-cta-dock"
             initial={{ y: '120%', opacity: 0 }}
             animate={{ y: '0%', opacity: 1 }}
@@ -257,10 +257,10 @@ const ChapterSelection = ({ subject }) => {
             <button className="cw-cta-button" onClick={startSession}>
               অনুশীলন শুরু করুন
             </button>
-          </m.div>
+          </Motion.div>
         )}
       </AnimatePresence>
-    </m.section>
+    </Motion.section>
   );
 };
 
