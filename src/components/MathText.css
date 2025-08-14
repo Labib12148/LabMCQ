@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;600;700&display=swap');
+
+/* Root wrapper: no opinionated styles here */
+.mt-root {
+  white-space: normal;
+}
+
+/* ============================================================
+   PLAIN TEXT (ALL text without math delimiters)
+   - hard resets prevent underline/bold/uppercase from parents
+   ============================================================ */
+.mt-plain {
+  font-family: 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  letter-spacing: normal !important;
+  line-height: 1.8;
+  font-size: 1.06rem;
+  color: #2D3748;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline;
+}
+.mt-plain * {
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  text-transform: inherit !important;
+  text-decoration: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+/* If any KaTeX node somehow appears inside plain text, neutralize it */
+.mt-plain .katex {
+  all: unset !important;
+  font-family: 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 400 !important;
+  line-height: 1.8 !important;
+  font-size: 1.06rem !important;
+  color: inherit !important;
+  display: inline !important;
+}
+
+/* Dark theme for plain text */
+.dark .mt-plain { color: #e0e0e0; }
+
+/* ============================================================
+   MATH (only when $...$ or \(...\) is present)
+   ============================================================ */
+.mt-math { display: inline; }
+
+.mt-root .katex {
+  display: inline-block;
+  margin-inline: 0.2em;
+  transform: translateY(-2px);
+  font-family: 'Fira Code', monospace;
+  color: #2563EB;
+  font-size: 1.08em;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+.mt-root .katex:hover {
+  color: #1D4ED8;
+  transform: translateY(-3px) scale(1.02);
+}
+.mt-root .katex-error {
+  font-family: 'Fira Code', monospace;
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #B91C1C;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* Dark theme for math */
+.dark .mt-root .katex { color: #a7c7e7; }
+.dark .mt-root .katex:hover { color: #cde2f5; }
+.dark .mt-root .katex-error {
+  color: #e87979;
+  background-color: rgba(232, 121, 121, 0.1);
+  border: 1px solid rgba(232, 121, 121, 0.2);
+}

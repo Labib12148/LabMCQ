@@ -1,0 +1,135 @@
+/* =====================================================
+   Designs/utilities.css
+   -----------------------------------------------------
+   Global utilities like focus styles, animations,
+   and helper classes.
+   ===================================================== */
+
+/* Accessibility Focus Ring */
+:is(.action-button,
+  .start-exam-button,
+  .submit-exam-button,
+  .option-btn,
+  .exam-option-btn,
+  .back-button,
+  .explanation-toggle,
+  .try-again-button,
+  .bookmark-btn,
+  .mode-pill,
+  .ghost-btn,
+  .board-button,
+  .cw-ch-item,
+  .subject-card,
+  .modal-button):focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.5);
+  outline-offset: 2px;
+  border-radius: 8px; /* Consistent radius for outline */
+}
+
+/* Animations */
+@keyframes cqFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Apply fade-up to card elements */
+.mcq-item-card,
+.exam-question,
+.results-container,
+.count-row {
+  animation: cqFadeUp 0.25s ease both;
+}
+
+/* Loading Skeleton */
+.loading-skeleton {
+  width: 100%;
+  height: 160px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.15),
+    rgba(148, 163, 184, 0.25),
+    rgba(148, 163, 184, 0.15)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border: 1px solid var(--ui-border);
+}
+
+/* Modal Dialog */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 24rem;
+  background: var(--ui-panel);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border);
+}
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.modal-message {
+  color: var(--ui-muted);
+  margin-bottom: 1.5rem;
+}
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.modal-button {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.modal-button.cancel {
+  background: rgba(2, 6, 23, 0.06);
+  color: var(--ui-text);
+  border-color: var(--ui-border);
+}
+.modal-button.cancel:hover {
+  filter: brightness(1.05);
+}
+.modal-button.confirm {
+  background: linear-gradient(180deg, var(--ui-red), #b91c1c);
+  color: #fff;
+}
+.modal-button.confirm.green {
+    background: linear-gradient(180deg, var(--ui-green), #059669);
+}
