@@ -86,11 +86,7 @@ const SmartImage = ({ src, alt, className, baseDir }) => {
  * Random & helpers
  *************************************************/
 function shuffleOptionsBalanced(q, targetLetter, rng) {
-  const remaining = letters.filter((L) => L !== targetLetter);
-  for (let i = remaining.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-  }
+  const otherPositions = letters.filter((L) => L !== targetLetter);
 
   const ans = String(q.answer || '').toUpperCase();
   const opt = (L) => q[`option${L}`] ?? '—';
@@ -101,7 +97,12 @@ function shuffleOptionsBalanced(q, targetLetter, rng) {
   shuffledMap[`${targetLetter}_img`] = img(ans);
 
   const otherSrc = letters.filter((L) => L !== ans);
-  remaining.forEach((pos, i) => {
+  for (let i = otherSrc.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [otherSrc[i], otherSrc[j]] = [otherSrc[j], otherSrc[i]];
+  }
+
+  otherPositions.forEach((pos, i) => {
     const src = otherSrc[i];
     shuffledMap[pos] = opt(src);
     shuffledMap[`${pos}_img`] = img(src);
