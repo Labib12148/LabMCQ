@@ -1,14 +1,12 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
-import ScrollTop from './components/ScrollTop';
-import HomePage from './Home/Home';
-import BoardQuestions from './BoardQuestions/BoardQuestions';
-import ChapterWise from './ChapterWise/ChapterWise';
+import { Navbar, Sidebar, ScrollTop } from '@/components';
+import HomePage from '@/pages/Home';
+import BoardQuestions from '@/features/board';
+import ChapterWise from '@/features/chapter';
 
-import './index.css';
+import '@/index.css';
 
 const AppLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

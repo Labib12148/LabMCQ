@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, BookOpen, Clock, Zap, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import './Home.css';
 
 const containerVariants = {
@@ -26,7 +26,7 @@ const HighlightStat = ({ icon, text }) => (
 );
 
 const ActionCard = ({ icon, title, description, link }) => (
-  <motion.div variants={itemVariants} className="h-full">
+  <Motion.div variants={itemVariants} className="h-full">
     <Link to={link} className="action-card">
       <div className="action-card-icon">{icon}</div>
       <div>
@@ -37,7 +37,7 @@ const ActionCard = ({ icon, title, description, link }) => (
         <span>শুরু করুন</span> &rarr;
       </div>
     </Link>
-  </motion.div>
+  </Motion.div>
 );
 
 const HomePage = () => {
@@ -45,20 +45,20 @@ const HomePage = () => {
     <main className="home-container min-h-screen py-20 px-6 md:px-12">
       <div className="relative z-10">
         {/* Hero Section */}
-        <motion.section
+        <Motion.section
           className="max-w-4xl mx-auto text-center mb-12"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <motion.h1 variants={itemVariants} className="hero-title">
+          <Motion.h1 variants={itemVariants} className="hero-title">
             <span className="gradient-text font-extrabold">SSC MCQ</span> প্রস্তুতির জন্য
             <span className="block gradient-text">তোমার সেরা সহায়ক</span>
-          </motion.h1>
-          <motion.p variants={itemVariants} className="hero-subtitle mt-2 text-xl">
+          </Motion.h1>
+          <Motion.p variants={itemVariants} className="hero-subtitle mt-2 text-xl">
             শুধুমাত্র নবম-দশম শ্রেণির শিক্ষার্থীদের জন্য বোর্ড প্রশ্ন, অধ্যায়ভিত্তিক প্রস্তুতি এবং দ্রুত রিভিশন—সব কিছু একসাথে।
-          </motion.p>
-        </motion.section>
+          </Motion.p>
+        </Motion.section>
 
         {/* Floating Highlights */}
         <div className="flex flex-wrap justify-center gap-4 mb-10">
@@ -68,7 +68,7 @@ const HomePage = () => {
         </div>
 
         {/* Features Grid */}
-        <motion.section
+        <Motion.section
           className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8"
           initial="hidden"
           animate="visible"
@@ -92,10 +92,10 @@ const HomePage = () => {
             description="সময় বাঁচাতে ও শেষ মুহূর্তে প্রস্তুতি নিতে Fast Practice এবং Last Minute মোড ব্যবহার করো।"
             link="/fast-practice"
           />
-        </motion.section>
+        </Motion.section>
 
         {/* Why Use Section */}
-        <motion.section
+        <Motion.section
           className="info-section mt-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -109,10 +109,10 @@ const HomePage = () => {
             <li>একদম বোর্ড পরীক্ষার মতো পরিবেশ</li>
             <li>অভ্যাসের জন্য মডেল টেস্ট ও দ্রুত অনুশীলন</li>
           </ul>
-        </motion.section>
+        </Motion.section>
 
         {/* One-click Start / CTA */}
-        <motion.section
+        <Motion.section
           className="flex justify-center mt-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -123,7 +123,7 @@ const HomePage = () => {
             <Zap size={24} className="inline-block mr-2" />
             <span>বোর্ড প্রশ্নে যাও</span>
           </Link>
-        </motion.section>
+        </Motion.section>
       </div>
     </main>
   );

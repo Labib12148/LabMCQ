@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BookOpen, Edit, Eye } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import './ViewType.css';
 
 // Animation variants for the overlay
@@ -36,7 +36,7 @@ const ViewType = ({ board, onSelectMode, onClose, autoFocus }) => {
     }, [onClose, autoFocus]);
 
     return (
-        <motion.div
+        <Motion.div
             className="modal-overlay"
             onClick={onClose}
             variants={modalOverlayVariants}
@@ -47,7 +47,7 @@ const ViewType = ({ board, onSelectMode, onClose, autoFocus }) => {
             aria-modal="true"
             aria-label="বোর্ড মোড নির্বাচন"
         >
-            <motion.div
+            <Motion.div
                 className="modal-content"
                 onClick={(e) => e.stopPropagation()}
                 ref={modalRef}
@@ -74,8 +74,8 @@ const ViewType = ({ board, onSelectMode, onClose, autoFocus }) => {
                 <button onClick={onClose} className="close-button" aria-label="বন্ধ করুন">
                     বন্ধ করুন
                 </button>
-            </motion.div>
-        </motion.div>
+            </Motion.div>
+        </Motion.div>
     );
 };
 

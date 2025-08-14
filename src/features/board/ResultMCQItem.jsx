@@ -1,9 +1,9 @@
 // src/BoardQuestions/ResultMCQItem.jsx
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import MathText from '../components/MathText';
-import { getAssetPath } from '../components/AssetFinder';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { MathText } from '@/components';
+import { getAssetPath } from '@/utils';
 
 const ResultMCQItem = ({ question, userAnswer, index }) => {
     const [showExplanation, setShowExplanation] = useState(false);
@@ -18,7 +18,7 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
     };
 
     return (
-        <motion.div
+        <Motion.div
             className="result-item-card"
             role="group"
             aria-label={`Result for question ${index}`}
@@ -53,7 +53,7 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
                     </button>
                     <AnimatePresence>
                         {showExplanation && (
-                            <motion.div
+                            <Motion.div
                                 className="explanation-content"
                                 style={{ transformOrigin: 'top' }} // Crucial for correct animation direction
                                 // FIX: Using scaleY for a smooth, performant animation
@@ -69,12 +69,12 @@ const ResultMCQItem = ({ question, userAnswer, index }) => {
                                         <MathText text={question.explanation} />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </Motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             )}
-        </motion.div>
+        </Motion.div>
     );
 };
 

@@ -1,16 +1,7 @@
-# Ignore node_modules
 node_modules/
-
-# Ignore Netlify build folder
 .netlify/
-
-# Optional: OS-specific files
+dist/
 .DS_Store
 Thumbs.db
-
-# Optional: environment files
 .env
 .env.local
-
-#dist
-dist/

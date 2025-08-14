@@ -5,8 +5,8 @@
    - Gradient titles, centered header, subject card centering
    - Mobile CTA dock centers & stretches the button
    ================================================================= */
-@import '../styles/utilities.css';
-@import '../styles/cards.css';
+@import '@/styles/utilities.css';
+@import '@/styles/cards.css';
 
 /* ---- Tokens ----------------------------------------------------- */
 /* LIGHT THEME (default) */
