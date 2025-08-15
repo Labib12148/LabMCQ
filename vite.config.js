@@ -6,6 +6,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/src',
+      'react-helmet-async': '/src/lib/react-helmet-async.jsx',
     },
   },
   server: {

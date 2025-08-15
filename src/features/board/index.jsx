@@ -13,6 +13,7 @@ import {
     findSubjectFromBoardId
 } from './classifications';
 import { setImageBasePath } from '@/utils';
+import { Seo } from '@/components';
 
 const modules = import.meta.glob('/src/data/**/*.json');
 
@@ -235,6 +236,7 @@ const BoardQuestions = () => {
 
     return (
         <>
+            <Seo title="বোর্ড প্রশ্ন" description="বিভিন্ন বোর্ডের MCQ প্রশ্ন" />
             <AnimatePresence>
                 {selectedBoard && (
                     <ViewType 

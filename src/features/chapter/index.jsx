@@ -6,6 +6,7 @@ import { ArrowLeft, Check } from 'lucide-react';
 import { chapterNames, loadChaptersForSubject, subjectConfig } from './ChapterClassifications';
 import ChapterQuestions from './ChapterQuestions';
 import './ChapterWise.css';
+import { Seo } from '@/components';
 
 /* ===== Animations ===== */
 const pageTransition = { type: 'spring', stiffness: 220, damping: 26 };
@@ -46,10 +47,11 @@ const ChapterWise = () => {
   if (subject && chapterParams && mode) currentView = 'questions';
   else if (subject) currentView = 'chapters';
 
-  return (
-    <div className="cw-container">
-      <AnimatePresence mode="wait">
-        {currentView === 'subjects' && <SubjectSelection key="subjects" />}
+    return (
+      <div className="cw-container">
+        <Seo title="অধ্যায়ভিত্তিক" description="অধ্যায়ভিত্তিক MCQ অনুশীলন" />
+        <AnimatePresence mode="wait">
+          {currentView === 'subjects' && <SubjectSelection key="subjects" />}
         {currentView === 'chapters' && (
           <ChapterSelection key="chapters" subject={subject} />
         )}

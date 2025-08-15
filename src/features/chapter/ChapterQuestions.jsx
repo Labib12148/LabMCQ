@@ -4,7 +4,7 @@ import { CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 import seedrandom from 'seedrandom';
 
 // Shared components & utils
-import { MathText } from '@/components';
+import { MathText, Breadcrumbs } from '@/components';
 import { getAssetPath } from '@/utils';
 
 // Styles (same path as DisplayQuestions)
@@ -520,6 +520,7 @@ const ChapterQuestions = ({ subject, selectedChapters = [], mode = 'practice', c
   return (
     <div className="cq-theme-wrapper">
       <div className="chapter-questions-container">
+        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: subjectConfig[subject]?.displayName, to: `/chapter-wise/${subject}` }, { label: `অধ্যায় ${selectedChapters.join(',')}` }]} />
         <div className="cq-topline">
           <Link to={`/chapter-wise/${subject}`} className="cq-toplink">সকল অধ্যায় দেখুন</Link>
         </div>

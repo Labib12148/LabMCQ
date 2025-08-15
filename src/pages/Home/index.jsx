@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, BookOpen, Clock, Zap, Star } from 'lucide-react';
 import { motion as Motion } from 'framer-motion';
+import { Seo } from '@/components';
 import './Home.css';
 
 const containerVariants = {
@@ -43,6 +44,7 @@ const ActionCard = ({ icon, title, description, link }) => (
 const HomePage = () => {
   return (
     <main className="home-container min-h-screen py-20 px-6 md:px-12">
+      <Seo title="LabMCQ" description="SSC MCQ practice with chapter-wise sets" />
       <div className="relative z-10">
         {/* Hero Section */}
         <Motion.section

@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { CheckCircle, HelpCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { MathText } from '@/components';
+import { MathText, Breadcrumbs } from '@/components';
 import '@/styles/styles.css';
 import { getAssetPath } from '@/utils';
 
@@ -172,6 +172,7 @@ const DisplayQuestions = ({ questions, boardName, mode }) => {
   return (
     <div className="cq-theme-wrapper">
       <div className="chapter-questions-container">
+        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: boardName }]} />
         <header className="cq-header">
           <h2 className="cq-title">{boardName}</h2>
           <div className="cq-subtitle">{subtitle}</div>

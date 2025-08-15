@@ -42,12 +42,13 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
                     </button>
                 </div>
 
-                <nav className="sidebar-nav">
+                    <nav className="sidebar-nav">
                     <SidebarLink to="/" icon={<Home size={20} />} text="ড্যাশবোর্ড" />
-                    <SidebarLink to="/boards" icon={<Shield size={20} />} text="বোর্ড প্রশ্ন" />
-                    <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
-                    <SidebarLink to="/revision-notes" icon={<Zap size={20} />} text="রিভিশন নোটস" />
-                </nav>
+                    <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়সমূহ" />
+                    <SidebarLink to="/about" icon={<Shield size={20} />} text="আমাদের সম্পর্কে" />
+                    <SidebarLink to="/contact" icon={<Zap size={20} />} text="যোগাযোগ" />
+                    <SidebarLink to="/privacy" icon={<BookOpen size={20} />} text="গোপনীয়তা" />
+                    </nav>
 
                 <div className="sidebar-footer">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
