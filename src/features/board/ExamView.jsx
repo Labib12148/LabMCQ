@@ -60,55 +60,68 @@ const ExamStartScreen = ({ boardName, onStartExam }) => {
 };
 
 // --- Active Exam Screen Component ---
-const ActiveExam = ({ questions, time, totalTime, answers, handleAnswer, submitExam }) => {
-  return (
-    <div>
-      <div className="timer-bar">
-        <div className="flex items-center gap-2">
-          <Clock size={20} />
-          <span>সময় বাকি: {String(Math.floor(time / 60)).padStart(2, '0').toLocaleString('bn-BD')}:{String(time % 60).padStart(2, '0').toLocaleString('bn-BD')}</span>
-        </div>
-        <div className="h-2 w-1/2 bg-gray-300 dark:bg-gray-700 rounded overflow-hidden">
-          <div className="h-full bg-green-500 transition-all duration-500" style={{ width: `${(time / totalTime) * 100}%` }}/>
-        </div>
-      </div>
-      <Motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
-        {questions.map((mcq, idx) => (
-          <Motion.div key={mcq.number} className="exam-question" variants={itemVariants}>
-            <div className="question-container">
-              <div className="mcq-number-circle">{(idx + 1).toLocaleString('bn-BD')}</div>
-              <div className="question-text">
-                <MathText text={mcq.question} />
-                {mcq.image && <img src={getAssetPath(mcq.image)} alt="Question" className="question-image mt-2" />}
-              </div>
+const ActiveExam = ({ boardName, questions, time, answers, handleAnswer, submitExam }) => {
+    const answeredCount = Object.keys(answers).length;
+    const formatTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0').toLocaleString('bn-BD')}:${String(t % 60).padStart(2, '0').toLocaleString('bn-BD')}`;
+    return (
+        <div>
+            <div className="exam-header">
+                <div className="font-bold">{boardName}</div>
+                <div>{answeredCount.toLocaleString('bn-BD')}/{questions.length.toLocaleString('bn-BD')}</div>
+                <div className="flex items-center gap-1"><Clock size={18} /><span>{formatTime(time)}</span></div>
+                <button type="button" onClick={submitExam} className="submit-exam-button">জমা দিন</button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {['A', 'B', 'C', 'D'].map((opt, optionIdx) => (
-                <Motion.button key={opt} type="button" onClick={() => handleAnswer(mcq.number, opt)} className={`exam-option-btn ${answers[mcq.number] === opt ? 'selected' : ''}`} variants={shakeVariant} animate={answers[mcq.number] === opt && answers[mcq.number] !== mcq.answer ? "shake" : ""} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <div className="option-label-circle">{['ক', 'খ', 'গ', 'ঘ'][optionIdx]}</div>
-                  <div className="option-text">
-                    <MathText text={mcq[`option${opt}`]} />
-                    {mcq[`option${opt}_img`] && <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image mt-2" />}
-                  </div>
-                </Motion.button>
-              ))}
+            <div className="exam-palette">
+                {questions.map(q => (
+                    <button key={q.number} type="button" className={answers[q.number] ? 'is-answered' : 'is-unattempted'}>
+                        {q.number.toLocaleString('bn-BD')}
+                    </button>
+                ))}
             </div>
-          </Motion.div>
-        ))}
-      </Motion.div>
-      <div className="flex justify-center mt-8 mb-14">
-        <button type="button" onClick={submitExam} className="submit-exam-button">পরীক্ষা জমা দিন</button>
-      </div>
-    </div>
-  );
+            <Motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
+                {questions.map((mcq, idx) => (
+                    <Motion.div key={mcq.number} className="exam-question" variants={itemVariants}>
+                        <div className="question-container">
+                            <div className="mcq-number-circle">{(idx + 1).toLocaleString('bn-BD')}</div>
+                            <div className="question-text">
+                                <MathText text={mcq.question} />
+                                {mcq.image && <img src={getAssetPath(mcq.image)} alt="Question" className="question-image mt-2" />}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {['A', 'B', 'C', 'D'].map((opt, optionIdx) => (
+                                <Motion.button key={opt} type="button" onClick={() => handleAnswer(mcq.number, opt)} className={`exam-option-btn ${answers[mcq.number] === opt ? 'selected' : ''}`} variants={shakeVariant} animate={answers[mcq.number] === opt && answers[mcq.number] !== mcq.answer ? "shake" : ""} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                                    <div className="option-label-circle">{['ক', 'খ', 'গ', 'ঘ'][optionIdx]}</div>
+                                    <div className="option-text">
+                                        <MathText text={mcq[`option${opt}`]} />
+                                        {mcq[`option${opt}_img`] && <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image mt-2" />}
+                                    </div>
+                                </Motion.button>
+                            ))}
+                        </div>
+                    </Motion.div>
+                ))}
+            </Motion.div>
+        </div>
+    );
 };
 
 // --- Exam Results Screen Component ---
-const ExamResults = ({ questions, answers, onTryAgain }) => {
+const ExamResults = ({ questions, answers, timeTaken, onTryAgain }) => {
     const correctAnswers = questions.filter(q => answers[q.number] === q.answer).length;
-    const incorrectAnswers = questions.length - correctAnswers;
+    const incorrectAnswers = questions.filter(q => answers[q.number] && answers[q.number] !== q.answer).length;
+    const unattempted = questions.length - correctAnswers - incorrectAnswers;
     const sortedQuestions = [...questions].sort((a, b) => a.number - b.number);
     const resultsRef = useRef(null);
+    const [filter, setFilter] = useState('all');
+
+    const formatTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0').toLocaleString('bn-BD')}:${String(t % 60).padStart(2, '0').toLocaleString('bn-BD')}`;
+    const filtered = sortedQuestions.filter(q => {
+        const isCorrect = answers[q.number] === q.answer;
+        if (filter === 'correct') return isCorrect;
+        if (filter === 'wrong') return answers[q.number] && !isCorrect;
+        return true;
+    });
 
     useEffect(() => {
         resultsRef.current?.scrollIntoView();
@@ -117,17 +130,17 @@ const ExamResults = ({ questions, answers, onTryAgain }) => {
     return (
         <Motion.div ref={resultsRef} className="results-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <h2 className="text-2xl font-bold text-center mb-4">পরীক্ষার ফলাফল</h2>
-            <div className="flex justify-around mb-6">
-                <div className="text-center">
-                    <CheckCircle className="text-green-500 dark:text-green-400 mx-auto mb-2" size={40} />
-                    <p className="font-bold text-xl">{correctAnswers.toLocaleString('bn-BD')}</p>
-                    <p>সঠিক</p>
-                </div>
-                <div className="text-center">
-                    <XCircle className="text-red-500 dark:text-red-400 mx-auto mb-2" size={40} />
-                    <p className="font-bold text-xl">{incorrectAnswers.toLocaleString('bn-BD')}</p>
-                    <p>ভুল</p>
-                </div>
+            <div className="exam-summary">
+                <div>স্কোর: {correctAnswers.toLocaleString('bn-BD')}/{questions.length.toLocaleString('bn-BD')}</div>
+                <div>সঠিক: {correctAnswers.toLocaleString('bn-BD')}</div>
+                <div>ভুল: {incorrectAnswers.toLocaleString('bn-BD')}</div>
+                <div>অউত্তরিত: {unattempted.toLocaleString('bn-BD')}</div>
+                <div>সময়: {formatTime(timeTaken)}</div>
+            </div>
+            <div className="exam-controls">
+                <button type="button" onClick={() => setFilter('all')} className={filter === 'all' ? 'selected' : ''}>সব</button>
+                <button type="button" onClick={() => setFilter('wrong')} className={filter === 'wrong' ? 'selected' : ''}>ভুল</button>
+                <button type="button" onClick={() => setFilter('correct')} className={filter === 'correct' ? 'selected' : ''}>সঠিক</button>
             </div>
             <div className="text-center my-6">
                 <button type="button" onClick={onTryAgain} className="try-again-button">
@@ -138,7 +151,7 @@ const ExamResults = ({ questions, answers, onTryAgain }) => {
             <div className="border-t dark:border-gray-700 pt-6">
                 <h3 className="text-xl font-bold text-center mb-4">বিস্তারিত ফলাফল</h3>
                 <div className="space-y-4">
-                    {sortedQuestions.map((q, idx) => (
+                    {filtered.map((q, idx) => (
                         <ResultMCQItem key={q.number} question={q} userAnswer={answers[q.number]} index={idx + 1}/>
                     ))}
                 </div>
@@ -152,28 +165,63 @@ const ExamView = ({ questions, boardName, onTryAgain }) => {
     const [examState, setExamState] = useState('notStarted');
     const [answers, setAnswers] = useState({});
     const [initialTime, setInitialTime] = useState(0);
+    const [totalTime, setTotalTime] = useState(0);
+    const [timeTaken, setTimeTaken] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const storageKey = `board-exam-${boardName}`;
 
+    // Timer
     const handleTimerFinish = useCallback(() => setExamState('finished'), []);
-    
-    // FIX: Calling the timer as a hook (use...)
     const time = CountdownTimer(initialTime, handleTimerFinish);
+
+    const proceedToSubmit = useCallback(() => {
+        setIsModalOpen(false);
+        setTimeTaken(totalTime - time);
+        setInitialTime(0);
+        setExamState('finished');
+        localStorage.removeItem(storageKey);
+    }, [time, totalTime, storageKey]);
+
+    useEffect(() => {
+        if (examState === 'finished' && time === 0) {
+            proceedToSubmit();
+        }
+    }, [examState, time, proceedToSubmit]);
+
+    // Autosave
+    useEffect(() => {
+        if (examState === 'active') {
+            localStorage.setItem(storageKey, JSON.stringify({ answers, time, totalTime }));
+        }
+    }, [answers, time, totalTime, examState, storageKey]);
+
+    // Resume prompt
+    useEffect(() => {
+        const saved = localStorage.getItem(storageKey);
+        if (saved && examState === 'notStarted') {
+            const data = JSON.parse(saved);
+            if (window.confirm('সংরক্ষিত পরীক্ষা পুনরায় শুরু করবেন?')) {
+                setAnswers(data.answers || {});
+                setInitialTime(data.time || 0);
+                setTotalTime(data.totalTime || 0);
+                setExamState('active');
+            } else {
+                localStorage.removeItem(storageKey);
+            }
+        }
+    }, [examState, storageKey]);
 
     const startExam = useCallback((totalSeconds) => {
         setInitialTime(totalSeconds);
+        setTotalTime(totalSeconds);
         setAnswers({});
+        localStorage.removeItem(storageKey);
         setExamState('active');
-    }, []);
+    }, [storageKey]);
 
     const handleAnswer = (questionNumber, answer) => {
         if (examState !== 'active') return;
         setAnswers(prev => ({ ...prev, [questionNumber]: answer }));
-    };
-
-    const proceedToSubmit = () => {
-        setIsModalOpen(false);
-        setInitialTime(0);
-        setExamState('finished');
     };
 
     const submitExam = () => {
@@ -200,8 +248,8 @@ const ExamView = ({ questions, boardName, onTryAgain }) => {
             <AnimatePresence mode="wait">
                 <Motion.div key={examState} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     {examState === 'notStarted' && <ExamStartScreen boardName={boardName} onStartExam={startExam} />}
-                    {examState === 'active' && <ActiveExam questions={questions} time={time} totalTime={initialTime} answers={answers} handleAnswer={handleAnswer} submitExam={submitExam} />}
-                    {examState === 'finished' && <ExamResults questions={questions} answers={answers} onTryAgain={resetExam} />}
+                    {examState === 'active' && <ActiveExam boardName={boardName} questions={questions} time={time} answers={answers} handleAnswer={handleAnswer} submitExam={submitExam} />}
+                    {examState === 'finished' && <ExamResults questions={questions} answers={answers} timeTaken={timeTaken} onTryAgain={resetExam} />}
                 </Motion.div>
             </AnimatePresence>
             <AnimatePresence>

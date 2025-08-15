@@ -278,6 +278,26 @@ html{ color-scheme: light dark }
   border-radius:10px; padding:6px 10px; margin-bottom:10px; position:relative;
 }
 
+.exam-header{ position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px; background:var(--surface); border-bottom:1px solid var(--cardBorder); }
+.exam-palette{ display:grid; grid-template-columns:repeat(auto-fill,minmax(32px,1fr)); gap:4px; margin:8px 0; }
+.exam-palette button{ width:32px; height:32px; border:1px solid var(--cardBorder); border-radius:6px; font-size:14px; background:var(--surface); }
+.exam-palette button.is-answered{ background:var(--accent); color:#fff; }
+.exam-palette button.is-current{ box-shadow:0 0 0 2px var(--accent); }
+.exam-palette button.is-unattempted{ background:var(--surface); }
+.exam-question{ margin-bottom:16px; }
+.exam-controls{ display:flex; gap:8px; justify-content:center; margin:12px 0; }
+.exam-controls button{ padding:6px 12px; border:1px solid var(--cardBorder); border-radius:8px; background:var(--surface); }
+.exam-controls button.selected{ background:var(--accent); color:#fff; }
+.exam-summary{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:12px; }
+.is-flagged{ outline:2px dashed var(--err); }
+.is-marked{ outline:2px dashed var(--accent); }
+.is-correct{ background:var(--okBg); border-color:var(--ok); }
+.is-wrong{ background:var(--errBg); border-color:var(--err); }
+
+@media (prefers-reduced-motion:reduce){
+  .exam-palette button{ transition:none }
+}
+
 .exam-question .question-container{ display:flex; gap:12px; align-items:flex-start }
 .mcq-number-circle{
   width:36px; height:36px; border-radius:999px; display:grid; place-items:center; font-weight:800;
