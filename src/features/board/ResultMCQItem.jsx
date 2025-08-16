@@ -1,81 +1,60 @@
-// src/BoardQuestions/ResultMCQItem.jsx
-import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { MathText } from '@/components';
-import { getAssetPath } from '@/utils';
+import React, { useState } from "react";
+import { MathText } from "@/components";
+import { getAssetPath } from "@/utils";
 
-const ResultMCQItem = ({ question, userAnswer, index }) => {
-    const [showExplanation, setShowExplanation] = useState(false);
+const bn = (n)=> n.toLocaleString("bn-BD");
+const map = { A:"ক", B:"খ", C:"গ", D:"ঘ" };
 
-    const getOptionClass = (optionLetter) => {
-        const isCorrect = optionLetter === question.answer;
-        const isUserChoice = optionLetter === userAnswer;
+export default function ResultMCQItem({ question, userAnswer, index }){
+  const [open,setOpen] = useState(false);
+  const answered = !!userAnswer; const correct = answered && userAnswer===question.answer;
+  const pill = !answered ? 'উত্তর দেওয়া হয়নি' : (correct ? 'সঠিক' : 'ভুল');
 
-        if (isCorrect) return 'correct';
-        if (isUserChoice && !isCorrect) return 'incorrect';
-        return 'default';
-    };
+  const optionClass = (L)=>{ const isCorrect=L===question.answer; const chosen=L===userAnswer; if(isCorrect) return 'correct'; if(chosen && !isCorrect) return 'incorrect'; return 'default'; };
 
-    return (
-        <Motion.div
-            className="result-item-card"
-            role="group"
-            aria-label={`Result for question ${index}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-        >
-            <div className="question-container">
-                <div className="mcq-number-circle">{index.toLocaleString('bn-BD')}</div>
-                <div className="question-text">
-                    <MathText text={question.question} />
-                    {question.image && <img src={getAssetPath(question.image)} alt="Question" className="question-image mt-2" />}
-                </div>
+  return (
+    <div className="result-item-card">
+      <div className="question-container">
+        <div className="mcq-number-circle">{bn(index)}</div>
+        <div className="question-text">
+          <div className={`pill ${!answered? 'pill-muted': (correct? 'pill-ok':'pill-err')}`}>{pill}</div>
+          {!correct && answered && (
+            <div className="result-meta">আপনার উত্তর: <strong>{map[userAnswer]}</strong> • সঠিক: <strong>{map[question.answer]}</strong></div>
+          )}
+          <MathText text={question.question} />
+          {question.image && <img className="question-image mt-2" src={getAssetPath(question.image)} alt="Question" />}
+        </div>
+      </div>
+
+      <div className="result-options" role="listbox">
+        {["A","B","C","D"].map((L, idx)=> (
+          <div key={L} className={`result-option-btn ${optionClass(L)}`} role="option" aria-selected={userAnswer===L}>
+            <div className="option-label-circle">{["ক","খ","গ","ঘ"][idx]}</div>
+            <div className="option-text">
+              <MathText text={question[`option${L}`]} />
+              {question[`option${L}_img`] && <img className="option-image mt-2" alt={`Option ${L}`} src={getAssetPath(question[`option${L}_img`])} />}
+              {userAnswer===L && !correct && <span className="badge-your">আপনার উত্তর</span>}
+              {L===question.answer && !correct && <span className="badge-correct">সঠিক উত্তর</span>}
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm" role="listbox">
-                {['A', 'B', 'C', 'D'].map((opt, idx) => (
-                    <div key={opt} className={`result-option-btn ${getOptionClass(opt)}`} role="option" aria-selected={userAnswer === opt}>
-                        <div className="option-label-circle">{['ক', 'খ', 'গ', 'ঘ'][idx]}</div>
-                        <div className="option-text">
-                            <MathText text={question[`option${opt}`]} />
-                            {question[`option${opt}_img`] && <img src={getAssetPath(question[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image mt-2" />}
-                        </div>
-                    </div>
-                ))}
+          </div>
+        ))}
+      </div>
+
+      {question.explanation && (
+        <div className="explanation-wrap">
+          <button className="explanation-toggle" onClick={()=> setOpen(o=>!o)} aria-expanded={open}>
+            {open? 'ব্যাখ্যা লুকান ↑' : 'ব্যাখ্যা দেখুন ↓'}
+          </button>
+          {open && (
+            <div className="explanation-content">
+              <div className="explanation-body">
+                <div className="label">ব্যাখ্যা:</div>
+                <div className="flex-1"><MathText text={question.explanation} /></div>
+              </div>
             </div>
-
-            {question.explanation && (
-                <div className="mt-2">
-                    <button onClick={() => setShowExplanation(!showExplanation)} className="explanation-toggle" aria-expanded={showExplanation}>
-                        <span>ব্যাখ্যা দেখুন</span>
-                        {showExplanation ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                    </button>
-                    <AnimatePresence>
-                        {showExplanation && (
-                            <Motion.div
-                                className="explanation-content"
-                                style={{ transformOrigin: 'top' }} // Crucial for correct animation direction
-                                // FIX: Using scaleY for a smooth, performant animation
-                                initial={{ scaleY: 0, opacity: 0 }}
-                                animate={{ scaleY: 1, opacity: 1 }}
-                                exit={{ scaleY: 0, opacity: 0 }}
-                                transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-                            >
-                                <div className="explanation-body">
-                                    <HelpCircle size={18} className="mr-2 mt-0.5 flex-shrink-0 text-sky-500"/>
-                                    <div className="flex-1">
-                                        <span className="font-semibold mr-1">ব্যাখ্যা:</span>
-                                        <MathText text={question.explanation} />
-                                    </div>
-                                </div>
-                            </Motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-            )}
-        </Motion.div>
-    );
-};
-
-export default ResultMCQItem;
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

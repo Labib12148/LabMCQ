@@ -1,0 +1,219 @@
+/* =================================================================
+   ExamView.css — polished + slim + no-overlap (mobile-first)
+   ================================================================= */
+
+/* ——— Start screen ——— */
+.start-screen { display:grid; place-items:center; min-height:68vh; padding:24px 0 }
+.exam-start-container{
+  background:var(--card); border:1px solid var(--cardBorder); border-radius:16px;
+  padding:22px; width:min(520px,92vw); box-shadow:var(--shadow-sm);
+  display:grid; gap:10px; justify-items:center; text-align:center;
+}
+.start-title{ font-size:clamp(1.3rem,1rem + .6vw,1.6rem); font-weight:800; margin:0 }
+.start-sub{ color:var(--ui-muted); margin:0 0 .25rem }
+.exam-time-inputs{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center }
+.time-input{
+  width:120px; max-width:45vw; padding:10px 12px; border-radius:10px;
+  border:1px solid var(--cardBorder); background:var(--surface); color:var(--ui-text);
+  font-weight:700; text-align:center; appearance:textfield; -moz-appearance:textfield;
+}
+.time-input::-webkit-outer-spin-button,.time-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
+.time-separator{ font-weight:800; opacity:.7 }
+.start-exam-button{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 16px; border-radius:12px; font-weight:800;
+  background:var(--accent); color:#fff; border:1px solid transparent; box-shadow:var(--shadow-sm);
+}
+.start-exam-button:hover{ filter:brightness(1.05) }
+@media (max-width:480px){ .time-input{ width:96px } }
+
+/* ——— Header ——— */
+.exam-header{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:8px 4px; margin:4px 0 6px;
+}
+.header-title{ font-weight:800; max-width:60vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.header-progress{ opacity:.85; font-weight:700 }
+
+/* ——— Sticky strip ——— */
+.exam-sticky{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; gap:10px; padding:6px 8px;
+  background:var(--surface); border-bottom:1px solid var(--cardBorder);
+  backdrop-filter:saturate(1.1) blur(6px);
+}
+.timer-chip{
+  font-variant-numeric:tabular-nums; border:1px solid var(--cardBorder);
+  background:var(--surface); padding:4px 10px; border-radius:10px; font-weight:800;
+}
+.exam-palette{ display:flex; gap:6px; overflow-x:auto; padding:2px 0; scrollbar-width:thin; scroll-behavior:smooth }
+.exam-palette button{
+  flex:0 0 auto; width:30px; height:30px; border:1px solid var(--cardBorder);
+  border-radius:8px; font-size:13px; background:var(--surface); font-weight:700;
+  transition:box-shadow .2s, border-color .2s;
+}
+.exam-palette button:is(:hover,:focus-visible){ border-color:var(--accent) }
+.exam-palette button.is-answered{ background:var(--accent); color:#fff; border-color:transparent }
+.exam-palette button.is-current{ box-shadow:0 0 0 2px var(--accent) inset }
+@media (min-width:640px){ .exam-palette button{ width:34px; height:34px; font-size:14px } }
+
+/* ——— MCQ cards ——— */
+.practice-list{ display:flex; flex-direction:column; gap:12px }
+.exam-question{ margin-bottom:4px }
+.mcq-card{
+  background:var(--card); border:1px solid var(--cardBorder);
+  border-radius:14px; padding:12px; box-shadow:var(--shadow-sm);
+}
+.mcq-header{ display:flex; gap:10px; align-items:flex-start }
+.mcq-question-number{
+  width:34px; height:34px; border-radius:999px; display:grid; place-items:center; font-weight:800;
+  border:1px solid var(--cardBorder); background:linear-gradient(180deg,rgba(37,99,235,.08),rgba(37,99,235,0));
+}
+.mcq-question-text{ flex:1; min-width:0 }
+.mcq-question-text p{ margin:.25rem 0 } /* denser KaTeX blocks */
+
+/* ——— Media (prevents image overflow on mobile) ——— */
+.media-wrap{
+  margin-top:.5rem; border-radius:12px; overflow:hidden;
+  background:var(--surface); border:1px solid var(--cardBorder);
+  max-width:100%;
+}
+.question-image,.option-image{ display:block; max-width:100%; height:auto; object-fit:contain }
+
+/* ——— Options ——— */
+/* SLIM + NO OVERLAP:
+   - remove vertical transforms
+   - isolate painting so borders don't bleed over neighbors
+   - raise z-index on hover/selected only (no shifting)
+*/
+.option-grid{
+  display:grid; grid-template-columns:1fr; gap:8px; margin-top:8px;
+  isolation:isolate; /* establishes new stacking context for children */
+}
+@media (min-width:680px){ .option-grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
+
+.option-button{
+  box-sizing:border-box;
+  position:relative; z-index:0; overflow:hidden; /* contain borders/shadows */
+  display:flex; align-items:flex-start; gap:8px; width:100%;
+  padding:10px 12px; min-height:46px;  /* slim scale */
+  background:var(--surface); border:1px solid var(--cardBorder);
+  border-radius:10px; text-align:left; cursor:pointer;
+  transition:border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+  background-clip:padding-box;  /* avoid border paint artifacts */
+}
+.option-button:is(:hover,:focus-visible){ border-color:rgba(37,99,235,.45); z-index:1 }
+.option-button.selected{ border-color:var(--accent); box-shadow:0 0 0 2px var(--ring); z-index:2 }
+.option-text{ flex:1; min-width:0; font-size:14.5px; line-height:1.55; overflow-wrap:anywhere; word-break:break-word }
+.option-text .katex-display{ margin:.25rem 0 } /* tighter KaTeX display */
+
+.option-button .option-label{
+  width:22px; height:22px; border-radius:999px; display:grid; place-items:center;
+  font-weight:800; font-size:12px; border:1px solid var(--cardBorder); color:var(--ui-muted);
+  margin-top:1px; flex-shrink:0;
+}
+
+/* Tablet/desktop: still slim, a hair more breathing room */
+@media (min-width:768px){
+  .option-button{ padding:12px 14px; min-height:48px }
+  .option-text{ font-size:15px; line-height:1.6 }
+  .option-button .option-label{ width:24px; height:24px; font-size:12.5px }
+}
+
+/* Ultra-small devices (320–360px) */
+@media (max-width:360px){
+  .option-grid{ gap:6px }
+  .option-button{ padding:9px 10px; min-height:44px }
+  .option-text{ font-size:14px; line-height:1.5 }
+  .option-button .option-label{ width:20px; height:20px; font-size:11.5px }
+}
+
+/* ——— Submit ——— */
+.submit-exam-button{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 16px; border-radius:12px; font-weight:800;
+  background:var(--accent); color:#fff; border:1px solid transparent;
+}
+.submit-exam-button:hover{ filter:brightness(1.05) }
+
+/* ——— Results ——— */
+.results-container{
+  background:var(--card); border:1px solid var(--cardBorder);
+  border-radius:16px; padding:16px; box-shadow:var(--shadow-sm);
+}
+.results-title{ text-align:center; font-size:1.25rem; font-weight:800; margin:0 0 .75rem }
+.summary-stats{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px; margin:10px 0 14px;
+}
+.stat{
+  background:var(--surface); border:1px solid var(--cardBorder);
+  border-radius:12px; padding:10px; text-align:center;
+}
+.stat-label{ font-size:12px; color:var(--ui-muted); margin-bottom:2px }
+.stat-value{ font-weight:800; font-size:1rem }
+.stat.ok{ background:var(--okBg); border-color:var(--ok) }
+.stat.err{ background:var(--errBg); border-color:var(--err) }
+.center{ text-align:center; margin:1rem 0 }
+.result-list{ display:flex; flex-direction:column; gap:12px }
+
+/* ——— Result item cards ——— */
+.result-item-card{
+  background:var(--card); border:1px solid var(--cardBorder);
+  border-radius:var(--radius); padding:14px; box-shadow:var(--shadow-sm);
+}
+.question-container{ display:flex; gap:12px; align-items:flex-start }
+.mcq-number-circle{
+  width:36px; height:36px; border-radius:999px; display:grid; place-items:center; font-weight:800;
+  border:1px solid var(--cardBorder);
+  background:linear-gradient(180deg,rgba(37,99,235,.08),rgba(37,99,235,0));
+}
+.pill{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:800; margin-bottom:6px }
+.pill-ok{ background:rgba(22,163,74,.12); color:var(--ok) }
+.pill-err{ background:rgba(220,38,38,.12); color:var(--err) }
+.pill-muted{ background:rgba(148,163,184,.18); color:var(--ui-muted) }
+.result-meta{ color:var(--ui-muted); margin:-2px 0 6px }
+
+.result-options{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px }
+@media (max-width:768px){ .result-options{ grid-template-columns:1fr } }
+
+.result-option-btn{
+  display:flex; gap:10px; align-items:flex-start; text-align:left;
+  background:var(--surface); border:1px solid var(--cardBorder);
+  border-radius:12px; padding:10px 12px; width:100%;
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+.result-option-btn.correct{ background:var(--okBg); border-color:var(--ok) }
+.result-option-btn.incorrect{ background:var(--errBg); border-color:var(--err) }
+
+.option-label-circle{
+  width:28px; height:28px; border-radius:999px; display:grid; place-items:center;
+  font-weight:800; border:1px solid var(--cardBorder);
+}
+.badge-your{
+  display:inline-block; margin-left:8px; font-size:12px; padding:2px 6px;
+  border-radius:999px; background:rgba(220,38,38,.12); color:var(--err); font-weight:800;
+}
+.badge-correct{
+  display:inline-block; margin-left:8px; font-size:12px; padding:2px 6px;
+  border-radius:999px; background:rgba(22,163,74,.12); color:var(--ok); font-weight:800;
+}
+
+/* Explanation */
+.explanation-wrap{ margin-top:8px }
+.explanation-toggle{
+  border:1px dashed var(--cardBorder); padding:8px 12px; border-radius:10px;
+  background:transparent; cursor:pointer; color:var(--accent-strong); font-weight:800;
+}
+.explanation-toggle:hover{ background:rgba(37,99,235,.06) }
+.explanation-content{
+  overflow:hidden; border:1px solid var(--cardBorder); border-radius:12px;
+  background:var(--surface); margin-top:8px
+}
+.explanation-body{ display:flex; gap:8px; padding:10px 12px; line-height:1.7; color:var(--ui-muted) }
+.explanation-body .label{ font-weight:800 }
+
+/* A11y prefs */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation:none !important; transition:none !important; scroll-behavior:auto !important }
+}

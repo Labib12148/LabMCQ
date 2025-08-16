@@ -1,264 +1,463 @@
-// src/BoardQuestions/ExamView.jsx
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Clock, CheckCircle, XCircle, RefreshCw, HelpCircle } from 'lucide-react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import '@/styles/styles.css';
-import ResultMCQItem from './ResultMCQItem';
-import { MathText, CountdownTimer } from '@/components';
-import { getAssetPath } from '@/utils';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { MathText } from "@/components";
+import { getAssetPath } from "@/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import "@/styles/styles.css";
+import "./ExamView.css";
+import ResultMCQItem from "./ResultMCQItem";
 
-// --- Animation Variants ---
-const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.07 } } };
-const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
-const shakeVariant = { shake: { x: [0, -8, 8, -8, 8, 0], transition: { duration: 0.4 } } };
+// utils
+const bn = (n) => n.toLocaleString("bn-BD");
+const bnOpt = ["ক", "খ", "গ", "ঘ"];
+const fmt = (s) =>
+  `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
-// --- Custom Confirmation Modal Component ---
-const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
-    return (
-        <div className="modal-overlay">
-            <Motion.div className="modal-content" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}>
-                <HelpCircle size={48} className="text-indigo-400 mx-auto mb-4" />
-                <h3 className="modal-title">আপনি কি নিশ্চিত?</h3>
-                <p className="modal-message">{message}</p>
-                <div className="modal-actions">
-                    <button onClick={onCancel} className="modal-button cancel">ফিরে যান</button>
-                    <button onClick={onConfirm} className="modal-button confirm">জমা দিন</button>
-                </div>
-            </Motion.div>
-        </div>
-    );
-};
-
-// --- Exam Start Screen Component ---
-const ExamStartScreen = ({ boardName, onStartExam }) => {
-    const [minutes, setMinutes] = useState(25);
-    const [seconds, setSeconds] = useState(0);
-    const handleStart = () => {
-        const totalSeconds = minutes * 60 + seconds;
-        if (totalSeconds <= 0) {
-            alert('অনুগ্রহ করে ০ এর চেয়ে বড় একটি বৈধ সময় নির্ধারণ করুন।');
-            return;
+function useCountdown(initialSeconds, onFinish) {
+  const [left, setLeft] = useState(initialSeconds || 0);
+  const [running, setRunning] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!running) return;
+    ref.current = setInterval(() => {
+      setLeft((t) => {
+        if (t <= 1) {
+          clearInterval(ref.current);
+          onFinish && onFinish();
+          return 0;
         }
-        onStartExam(totalSeconds);
-    };
-    return (
-        <div className="flex items-center justify-center h-full p-4">
-            <Motion.div className="exam-start-container" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
-                <h2 className="text-2xl font-bold mb-4">{boardName} - পরীক্ষা</h2>
-                <div className="my-6 space-y-4">
-                    <label className="block font-semibold text-gray-700 dark:text-gray-300 mb-1">মোট সময়</label>
-                    <div className="exam-time-inputs">
-                        <input type="number" value={minutes} min="0" onChange={(e) => setMinutes(Number(e.target.value))} className="time-input" placeholder="মিনিট"/>
-                        <span className="time-separator">:</span>
-                        <input type="number" value={seconds} min="0" max="59" onChange={(e) => setSeconds(Number(e.target.value))} className="time-input" placeholder="সেকেন্ড"/>
-                    </div>
-                </div>
-                <button type="button" onClick={handleStart} className="start-exam-button mt-6">পরীক্ষা শুরু করুন</button>
-            </Motion.div>
-        </div>
-    );
-};
+        return t - 1;
+      });
+    }, 1000);
+    return () => clearInterval(ref.current);
+  }, [running, onFinish]);
+  const start = useCallback((sec) => {
+    setLeft(sec);
+    setRunning(true);
+  }, []);
+  const stop = useCallback(() => setRunning(false), []);
+  return { left, start, stop, running };
+}
 
-// --- Active Exam Screen Component ---
-const ActiveExam = ({ boardName, questions, time, answers, handleAnswer, submitExam }) => {
-    const answeredCount = Object.keys(answers).length;
-    const formatTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0').toLocaleString('bn-BD')}:${String(t % 60).padStart(2, '0').toLocaleString('bn-BD')}`;
-    return (
-        <div>
-            <div className="exam-header">
-                <div className="font-bold">{boardName}</div>
-                <div>{answeredCount.toLocaleString('bn-BD')}/{questions.length.toLocaleString('bn-BD')}</div>
-                <div className="flex items-center gap-1"><Clock size={18} /><span>{formatTime(time)}</span></div>
-                <button type="button" onClick={submitExam} className="submit-exam-button">জমা দিন</button>
-            </div>
-            <div className="exam-palette">
-                {questions.map(q => (
-                    <button key={q.number} type="button" className={answers[q.number] ? 'is-answered' : 'is-unattempted'}>
-                        {q.number.toLocaleString('bn-BD')}
-                    </button>
-                ))}
-            </div>
-            <Motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
-                {questions.map((mcq, idx) => (
-                    <Motion.div key={mcq.number} className="exam-question" variants={itemVariants}>
-                        <div className="question-container">
-                            <div className="mcq-number-circle">{(idx + 1).toLocaleString('bn-BD')}</div>
-                            <div className="question-text">
-                                <MathText text={mcq.question} />
-                                {mcq.image && <img src={getAssetPath(mcq.image)} alt="Question" className="question-image mt-2" />}
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {['A', 'B', 'C', 'D'].map((opt, optionIdx) => (
-                                <Motion.button key={opt} type="button" onClick={() => handleAnswer(mcq.number, opt)} className={`exam-option-btn ${answers[mcq.number] === opt ? 'selected' : ''}`} variants={shakeVariant} animate={answers[mcq.number] === opt && answers[mcq.number] !== mcq.answer ? "shake" : ""} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                                    <div className="option-label-circle">{['ক', 'খ', 'গ', 'ঘ'][optionIdx]}</div>
-                                    <div className="option-text">
-                                        <MathText text={mcq[`option${opt}`]} />
-                                        {mcq[`option${opt}_img`] && <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image mt-2" />}
-                                    </div>
-                                </Motion.button>
-                            ))}
-                        </div>
-                    </Motion.div>
-                ))}
-            </Motion.div>
-        </div>
-    );
-};
+// ──────────────────────────────────────────────────────────────────────────────
+function StartScreen({ title, onStart }) {
+  const [min, setMin] = useState(25);
+  const [sec, setSec] = useState(0);
+  const begin = () => {
+    const total = min * 60 + sec;
+    if (total <= 0) {
+      alert("সময় ০ হতে পারে না");
+      return;
+    }
+    onStart(total);
+  };
 
-// --- Exam Results Screen Component ---
-const ExamResults = ({ questions, answers, timeTaken, onTryAgain }) => {
-    const correctAnswers = questions.filter(q => answers[q.number] === q.answer).length;
-    const incorrectAnswers = questions.filter(q => answers[q.number] && answers[q.number] !== q.answer).length;
-    const unattempted = questions.length - correctAnswers - incorrectAnswers;
-    const sortedQuestions = [...questions].sort((a, b) => a.number - b.number);
-    const resultsRef = useRef(null);
-    const [filter, setFilter] = useState('all');
-
-    const formatTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0').toLocaleString('bn-BD')}:${String(t % 60).padStart(2, '0').toLocaleString('bn-BD')}`;
-    const filtered = sortedQuestions.filter(q => {
-        const isCorrect = answers[q.number] === q.answer;
-        if (filter === 'correct') return isCorrect;
-        if (filter === 'wrong') return answers[q.number] && !isCorrect;
-        return true;
-    });
-
-    useEffect(() => {
-        resultsRef.current?.scrollIntoView();
-    }, []);
-
-    return (
-        <Motion.div ref={resultsRef} className="results-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="text-2xl font-bold text-center mb-4">পরীক্ষার ফলাফল</h2>
-            <div className="exam-summary">
-                <div>স্কোর: {correctAnswers.toLocaleString('bn-BD')}/{questions.length.toLocaleString('bn-BD')}</div>
-                <div>সঠিক: {correctAnswers.toLocaleString('bn-BD')}</div>
-                <div>ভুল: {incorrectAnswers.toLocaleString('bn-BD')}</div>
-                <div>অউত্তরিত: {unattempted.toLocaleString('bn-BD')}</div>
-                <div>সময়: {formatTime(timeTaken)}</div>
-            </div>
-            <div className="exam-controls">
-                <button type="button" onClick={() => setFilter('all')} className={filter === 'all' ? 'selected' : ''}>সব</button>
-                <button type="button" onClick={() => setFilter('wrong')} className={filter === 'wrong' ? 'selected' : ''}>ভুল</button>
-                <button type="button" onClick={() => setFilter('correct')} className={filter === 'correct' ? 'selected' : ''}>সঠিক</button>
-            </div>
-            <div className="text-center my-6">
-                <button type="button" onClick={onTryAgain} className="try-again-button">
-                    <RefreshCw size={18} className="mr-2" />
-                    অন্য বোর্ড চেষ্টা করুন
-                </button>
-            </div>
-            <div className="border-t dark:border-gray-700 pt-6">
-                <h3 className="text-xl font-bold text-center mb-4">বিস্তারিত ফলাফল</h3>
-                <div className="space-y-4">
-                    {filtered.map((q, idx) => (
-                        <ResultMCQItem key={q.number} question={q} userAnswer={answers[q.number]} index={idx + 1}/>
-                    ))}
-                </div>
-            </div>
-        </Motion.div>
-    );
-};
-
-// --- Main ExamView Component ---
-const ExamView = ({ questions, boardName, onTryAgain }) => {
-    const [examState, setExamState] = useState('notStarted');
-    const [answers, setAnswers] = useState({});
-    const [initialTime, setInitialTime] = useState(0);
-    const [totalTime, setTotalTime] = useState(0);
-    const [timeTaken, setTimeTaken] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const storageKey = `board-exam-${boardName}`;
-
-    // Timer
-    const handleTimerFinish = useCallback(() => setExamState('finished'), []);
-    const time = CountdownTimer(initialTime, handleTimerFinish);
-
-    const proceedToSubmit = useCallback(() => {
-        setIsModalOpen(false);
-        setTimeTaken(totalTime - time);
-        setInitialTime(0);
-        setExamState('finished');
-        localStorage.removeItem(storageKey);
-    }, [time, totalTime, storageKey]);
-
-    useEffect(() => {
-        if (examState === 'finished' && time === 0) {
-            proceedToSubmit();
-        }
-    }, [examState, time, proceedToSubmit]);
-
-    // Autosave
-    useEffect(() => {
-        if (examState === 'active') {
-            localStorage.setItem(storageKey, JSON.stringify({ answers, time, totalTime }));
-        }
-    }, [answers, time, totalTime, examState, storageKey]);
-
-    // Resume prompt
-    useEffect(() => {
-        const saved = localStorage.getItem(storageKey);
-        if (saved && examState === 'notStarted') {
-            const data = JSON.parse(saved);
-            if (window.confirm('সংরক্ষিত পরীক্ষা পুনরায় শুরু করবেন?')) {
-                setAnswers(data.answers || {});
-                setInitialTime(data.time || 0);
-                setTotalTime(data.totalTime || 0);
-                setExamState('active');
-            } else {
-                localStorage.removeItem(storageKey);
+  return (
+    <motion.div
+      className="chapter-questions-container start-screen"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 200, damping: 22 }}
+    >
+      <motion.div
+        className="exam-start-container"
+        layout
+        transition={{ type: "spring", stiffness: 250, damping: 20 }}
+      >
+        <h2 className="start-title">{title}</h2>
+        <p className="start-sub">সময় নির্ধারণ করে পরীক্ষা শুরু করুন</p>
+        <div className="exam-time-inputs">
+          <input
+            className="time-input"
+            type="number"
+            min={0}
+            value={min}
+            onChange={(e) => setMin(+e.target.value || 0)}
+            aria-label="মিনিট"
+          />
+          <span className="time-separator">:</span>
+          <input
+            className="time-input"
+            type="number"
+            min={0}
+            max={59}
+            value={sec}
+            onChange={(e) =>
+              setSec(Math.min(59, Math.max(0, +e.target.value || 0)))
             }
-        }
-    }, [examState, storageKey]);
+            aria-label="সেকেন্ড"
+          />
+        </div>
+        <motion.button
+          className="start-exam-button"
+          onClick={begin}
+          whileTap={{ scale: 0.98 }}
+          whileHover={{ scale: 1.02 }}
+        >
+          পরীক্ষা শুরু করুন
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-    const startExam = useCallback((totalSeconds) => {
-        setInitialTime(totalSeconds);
-        setTotalTime(totalSeconds);
-        setAnswers({});
-        localStorage.removeItem(storageKey);
-        setExamState('active');
-    }, [storageKey]);
+function MCQItem({ q, index, selected, onSelect }) {
+  return (
+    <motion.article
+      className="mcq-card"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ type: "spring", stiffness: 220, damping: 20 }}
+    >
+      <div className="mcq-header">
+        <div className="mcq-question-number">{bn(index)}</div>
+        <div className="mcq-question-text">
+          <MathText text={q.question} />
+          {q.image && (
+            <div className="media-wrap">
+              <img
+                className="question-image"
+                src={getAssetPath(q.image)}
+                alt="Question"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="option-grid" role="radiogroup" aria-label="Options">
+        {["A", "B", "C", "D"].map((L, idx) => (
+          <motion.button
+            key={L}
+            type="button"
+            className={`option-button ${selected === L ? "selected" : ""}`}
+            onClick={() => onSelect(q.number, L)}
+            aria-pressed={selected === L}
+            whileTap={{ scale: 0.985 }}
+            whileHover={{ translateY: -1 }}
+            layout
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+          >
+            <span className="option-label">{bnOpt[idx]}</span>
+            <div className="option-text">
+              <MathText text={q[`option${L}`]} />
+              {q[`option${L}_img`] && (
+                <div className="media-wrap">
+                  <img
+                    className="option-image"
+                    src={getAssetPath(q[`option${L}_img`])}
+                    alt={`Option ${L}`}
+                    loading="lazy"
+                  />
+                </div>
+              )}
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </motion.article>
+  );
+}
 
-    const handleAnswer = (questionNumber, answer) => {
-        if (examState !== 'active') return;
-        setAnswers(prev => ({ ...prev, [questionNumber]: answer }));
-    };
+// Simple header (title + progress). Timer lives in sticky palette below.
+function Header({ title, answered, total }) {
+  return (
+    <header className="exam-header" role="region" aria-label="পরীক্ষা অবস্থা">
+      <div className="header-title" title={title}>
+        {title}
+      </div>
+      <div className="header-progress">
+        {bn(answered)}/{bn(total)}
+      </div>
+    </header>
+  );
+}
 
-    const submitExam = () => {
-        const unansweredCount = questions.filter(q => !answers[q.number]).length;
-        if (unansweredCount > 0) {
-            setIsModalOpen(true);
-        } else {
-            proceedToSubmit();
-        }
-    };
-    
-    const resetExam = () => {
-        setExamState('notStarted');
-        setAnswers({});
-        setInitialTime(0);
-        onTryAgain();
-    };
+// Sticky strip that floats while scrolling: small timer + compact palette
+function StickyBar({ questions, current, answers, secsLeft, onJump }) {
+  const paletteRef = useRef(null);
 
-    const unansweredCount = questions.filter(q => !answers[q.number]).length;
-    const confirmationMessage = `আপনার এখনো ${unansweredCount.toLocaleString('bn-BD')} টি প্রশ্নের উত্তর বাকি আছে। আপনি কি জমা দিতে চান?`;
-
-    return (
-        <>
-            <AnimatePresence mode="wait">
-                <Motion.div key={examState} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    {examState === 'notStarted' && <ExamStartScreen boardName={boardName} onStartExam={startExam} />}
-                    {examState === 'active' && <ActiveExam boardName={boardName} questions={questions} time={time} answers={answers} handleAnswer={handleAnswer} submitExam={submitExam} />}
-                    {examState === 'finished' && <ExamResults questions={questions} answers={answers} timeTaken={timeTaken} onTryAgain={resetExam} />}
-                </Motion.div>
-            </AnimatePresence>
-            <AnimatePresence>
-                {isModalOpen && (
-                    <ConfirmationModal message={confirmationMessage} onConfirm={proceedToSubmit} onCancel={() => setIsModalOpen(false)} />
-                )}
-            </AnimatePresence>
-        </>
+  // Keep current dot centered in the palette
+  useEffect(() => {
+    const el = paletteRef.current?.querySelector(
+      `[data-num="${current}"]`
     );
-};
+    el?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [current]);
 
-export default ExamView;
+  return (
+    <motion.div
+      className="exam-sticky"
+      role="navigation"
+      aria-label="প্রশ্ন নেভিগেশন"
+      initial={false}
+      animate={{ backgroundColor: "var(--surface)" }}
+    >
+      <motion.div
+        className="timer-chip"
+        layout
+        aria-live="polite"
+        title="সময় বাকি"
+      >
+        ⏱ {fmt(secsLeft)}
+      </motion.div>
+
+      <nav className="exam-palette" ref={paletteRef}>
+        {questions.map((q) => (
+          <motion.button
+            key={q.number}
+            type="button"
+            data-num={q.number}
+            onClick={() => onJump(q.number)}
+            className={`${answers[q.number] ? "is-answered" : "is-unattempted"} ${
+              current === q.number ? "is-current" : ""
+            }`}
+            title={`প্রশ্ন ${q.number}`}
+            aria-current={current === q.number ? "true" : "false"}
+            whileTap={{ scale: 0.92 }}
+            whileHover={{ scale: 1.05 }}
+            layout
+          >
+            {bn(q.number)}
+          </motion.button>
+        ))}
+      </nav>
+    </motion.div>
+  );
+}
+
+export default function ExamView({
+  boardName = "বোর্ড পরীক্ষা",
+  questions = [],
+}) {
+  const sorted = useMemo(
+    () => [...questions].sort((a, b) => a.number - b.number),
+    [questions]
+  );
+
+  const [phase, setPhase] = useState("setup"); // setup | active | review
+  const [current, setCurrent] = useState(sorted[0]?.number || 1);
+  const [answers, setAnswers] = useState({});
+  const [startedAt, setStartedAt] = useState(null);
+  const [submittedAt, setSubmittedAt] = useState(null);
+
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const countdown = useCountdown(0, () => setPhase("review"));
+
+  // keyboard shortcuts
+  useEffect(() => {
+    function onKey(e) {
+      if (phase !== "active") return;
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const idx = ["1", "2", "3", "4"].indexOf(e.key);
+      if (idx >= 0) {
+        const L = ["A", "B", "C", "D"][idx];
+        setAnswers((p) => ({ ...p, [current]: L }));
+        return;
+      }
+      if (e.key.toLowerCase() === "n") {
+        const i = sorted.findIndex((q) => q.number === current);
+        if (i < sorted.length - 1) setCurrent(sorted[i + 1].number);
+      }
+      if (e.key.toLowerCase() === "p") {
+        const i = sorted.findIndex((q) => q.number === current);
+        if (i > 0) setCurrent(sorted[i - 1].number);
+      }
+      if (e.key.toLowerCase() === "f") {
+        submit();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [phase, current, sorted]);
+
+  // ▶▶ Start exam
+  const start = (sec) => {
+    setTotalSeconds(sec);
+    setAnswers({});
+    setStartedAt(Date.now());
+    countdown.start(sec);
+    setPhase("active");
+  };
+
+  // ▶▶ Select answer
+  const onSelect = (num, L) =>
+    setAnswers((prev) => ({ ...prev, [num]: L }));
+
+  // ▶▶ Jump with sticky-offset (fixes 10→10 scroll)
+  const jumpTo = (num) => {
+    setCurrent(num);
+    const el = document.getElementById(`q-${num}`);
+    if (!el) return;
+    const header = document.querySelector(".exam-header");
+    const sticky = document.querySelector(".exam-sticky");
+    const offset =
+      (header?.offsetHeight || 0) + (sticky?.offsetHeight || 0) + 12;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  // ▶▶ Submit
+  const submit = () => {
+    const un = sorted.filter((q) => !answers[q.number]).length;
+    const ok = window.confirm(
+      un
+        ? `আপনার ${bn(un)} টি প্রশ্ন বাকি। জমা দেবেন?`
+        : "জমা দিতে চান?"
+    );
+    if (!ok) return;
+    setSubmittedAt(Date.now());
+    setPhase("review");
+  };
+
+  // Score/summary
+  const summary = useMemo(() => {
+    const total = sorted.length;
+    let correct = 0,
+      wrong = 0;
+    sorted.forEach((q) => {
+      const a = answers[q.number];
+      if (!a) return;
+      if (a === q.answer) correct++;
+      else wrong++;
+    });
+    const unattempted = total - correct - wrong;
+    const score = correct;
+    const taken =
+      submittedAt && startedAt
+        ? Math.max(0, Math.floor((submittedAt - startedAt) / 1000))
+        : totalSeconds - countdown.left;
+    return { total, correct, wrong, unattempted, score, timeTaken: taken };
+  }, [answers, sorted, submittedAt, startedAt, totalSeconds, countdown.left]);
+
+  if (!sorted.length)
+    return <div className="chapter-questions-container">ডেটা পাওয়া যায়নি</div>;
+
+  return (
+    <div className="cq-theme-wrapper">
+      <div className="chapter-questions-container">
+        <AnimatePresence mode="wait">
+          {phase === "setup" && (
+            <StartScreen key="start" title={boardName} onStart={start} />
+          )}
+
+          {phase === "active" && (
+            <motion.div
+              key="active"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <Header
+                title={boardName}
+                answered={Object.values(answers).filter(Boolean).length}
+                total={sorted.length}
+              />
+              <StickyBar
+                questions={sorted}
+                current={current}
+                answers={answers}
+                secsLeft={countdown.left}
+                onJump={jumpTo}
+              />
+
+              <section className="practice-list">
+                {sorted.map((q, i) => (
+                  <div
+                    key={q.number}
+                    id={`q-${q.number}`}
+                    className="exam-question"
+                    style={{ scrollMarginTop: "140px" }}
+                  >
+                    <MCQItem
+                      q={q}
+                      index={i + 1}
+                      selected={answers[q.number]}
+                      onSelect={onSelect}
+                    />
+                  </div>
+                ))}
+              </section>
+
+              <div className="center">
+                <motion.button
+                  className="submit-exam-button"
+                  onClick={submit}
+                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  জমা দিন
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+
+          {phase === "review" && (
+            <motion.div
+              key="review"
+              className="results-container"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <h2 className="results-title">পরীক্ষার ফলাফল</h2>
+
+              <div className="summary-stats">
+                <div className="stat score">
+                  <div className="stat-label">স্কোর</div>
+                  <div className="stat-value">
+                    {bn(summary.score)}/{bn(summary.total)}
+                  </div>
+                </div>
+                <div className="stat ok">
+                  <div className="stat-label">সঠিক</div>
+                  <div className="stat-value">{bn(summary.correct)}</div>
+                </div>
+                <div className="stat err">
+                  <div className="stat-label">ভুল</div>
+                  <div className="stat-value">{bn(summary.wrong)}</div>
+                </div>
+                <div className="stat mut">
+                  <div className="stat-label">অউত্তরিত</div>
+                  <div className="stat-value">
+                    {bn(summary.unattempted)}
+                  </div>
+                </div>
+                <div className="stat time">
+                  <div className="stat-label">সময়</div>
+                  <div className="stat-value">{fmt(summary.timeTaken)}</div>
+                </div>
+              </div>
+
+              <div className="center">
+                <motion.button
+                  className="try-again-button start-exam-button"
+                  onClick={() => {
+                    setPhase("setup");
+                    setAnswers({});
+                    setStartedAt(null);
+                    setSubmittedAt(null);
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  পুনরায় পরীক্ষা
+                </motion.button>
+              </div>
+
+              <div className="result-list">
+                {sorted.map((q, idx) => (
+                  <ResultMCQItem
+                    key={q.number}
+                    question={q}
+                    userAnswer={answers[q.number]}
+                    index={idx + 1}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
