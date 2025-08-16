@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Shield, BookOpen, Clock, Zap, X } from 'lucide-react';
+import { Home, Shield, BookOpen, X } from 'lucide-react';
 import './Layout.css'; // Import the final unified CSS
 
 const SidebarLink = ({ to, icon, text }) => (
@@ -46,7 +46,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
                     <SidebarLink to="/" icon={<Home size={20} />} text="ড্যাশবোর্ড" />
                     <SidebarLink to="/boards" icon={<Shield size={20} />} text="বোর্ড প্রশ্ন" />
                     <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
-                    <SidebarLink to="/revision-notes" icon={<Zap size={20} />} text="রিভিশন নোটস" />
+                    {/* TODO: Add Revision Notes section when content is ready */}
                 </nav>
 
                 <div className="sidebar-footer">

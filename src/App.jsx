@@ -5,6 +5,8 @@ import { Navbar, Sidebar, ScrollTop } from '@/components';
 import HomePage from '@/pages/Home';
 import BoardQuestions from '@/features/board';
 import ChapterWise from '@/features/chapter';
+import Error404 from '@/pages/Error404';
+import Error500 from '@/pages/Error500';
 
 import '@/index.css';
 
@@ -41,9 +43,8 @@ function App() {
           <Route path="/chapter-wise/:subject" element={<ChapterWise />} />
           <Route path="/chapter-wise/:subject/:chapters/:mode" element={<ChapterWise />} />
 
-          {/* --- Placeholder Routes --- */}
-          <Route path="/mock-tests" element={<div className="p-8 text-center text-2xl text-gray-700 dark:text-gray-200">Mock Tests Page (Coming Soon!)</div>} />
-          <Route path="/revision-notes" element={<div className="p-8 text-center text-2xl text-gray-700 dark:text-gray-200">Revision Notes Page (Coming Soon!)</div>} />
+          <Route path="/500" element={<Error500 />} />
+          <Route path="*" element={<Error404 />} />
         </Route>
       </Routes>
     </Router>

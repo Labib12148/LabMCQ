@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { MathText } from "@/components";
 import { getAssetPath } from "@/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // eslint-disable-line no-unused-vars
 import "@/styles/styles.css";
 import "./ExamView.css";
 import ResultMCQItem from "./ResultMCQItem";

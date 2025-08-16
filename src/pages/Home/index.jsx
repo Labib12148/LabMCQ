@@ -86,12 +86,7 @@ const HomePage = () => {
             description="প্রতিটি অধ্যায় আলাদাভাবে চর্চা করো—যে অধ্যায় দুর্বল, সেটাই বেশি বার চর্চা করো।"
             link="/chapter-wise"
           />
-          <ActionCard
-            icon={<Clock size={40} className="text-green-400" />}
-            title="দ্রুত অনুশীলন"
-            description="সময় বাঁচাতে ও শেষ মুহূর্তে প্রস্তুতি নিতে Fast Practice এবং Last Minute মোড ব্যবহার করো।"
-            link="/fast-practice"
-          />
+          {/* TODO: Add Fast Practice feature when ready */}
         </Motion.section>
 
         {/* Why Use Section */}
