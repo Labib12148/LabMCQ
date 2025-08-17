@@ -86,7 +86,7 @@ const HomePage = () => {
             description="প্রতিটি অধ্যায় আলাদাভাবে চর্চা করো—যে অধ্যায় দুর্বল, সেটাই বেশি বার চর্চা করো।"
             link="/chapter-wise"
           />
-          {/* TODO: Add Fast Practice feature when ready */}
+          {/* TODO: Add Mock Test feature */}
         </Motion.section>
 
         {/* Why Use Section */}
