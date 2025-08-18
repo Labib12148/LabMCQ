@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, CheckSquare, Square, PlayCircle } from 'lucide-react';
 import { subjectConfig } from '../../components/ChapterClassifications';
+import { Seo } from '@/components';
 import MockTest from './MockTest';
 import './Mock.css';
 
@@ -41,8 +42,8 @@ export default function MockIndex(){
   const [seed,setSeed] = useState(()=>Math.floor(Math.random()*1e9));
 
   const chapters = useChapters(subject);
-  const totalAvailable = useMemo(()=> chapters.reduce((s,c)=>s+c.count,0), [chapters]);
-  const selectedCount = useMemo(()=> chapters.filter(c=> selected.has(c.name)).reduce((s,c)=>s+c.count,0), [chapters,selected]);
+  const _totalAvailable = useMemo(()=> chapters.reduce((s,c)=>s+c.count,0), [chapters]);
+  const _selectedCount = useMemo(()=> chapters.filter(c=> selected.has(c.name)).reduce((s,c)=>s+c.count,0), [chapters,selected]);
 
   const title = useMemo(()=> subject? `${subjectConfig[subject]?.displayName} — মক টেস্ট` : 'মক টেস্ট', [subject]);
 
@@ -51,6 +52,8 @@ export default function MockIndex(){
   const clearAll = ()=> setSelected(new Set());
 
   return (
+    <>
+    <Seo title="মক টেস্ট – LabMCQ" description="মক টেস্টের জন্য অনুশীলন" canonical="https://labmcq.com/mock-test" noindex />
     <div className="cw-container">
       {/* SUBJECT PICK */}
       {step==='pick' && (
@@ -58,7 +61,7 @@ export default function MockIndex(){
           <header className="cw-header">
             <div/>
             <div className="cw-header-content">
-              <h2 className="view-title">মক টেস্ট</h2>
+              <h1 className="view-title">মক টেস্ট</h1>
               <p className="view-subtitle">বিষয় নির্বাচন করুন</p>
             </div>
             <div/>
@@ -134,5 +137,6 @@ export default function MockIndex(){
         />
       )}
     </div>
+    </>
   );
 }

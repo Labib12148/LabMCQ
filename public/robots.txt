@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /login
+Disallow: /mock
+Disallow: /test
+Disallow: /error
+Sitemap: https://labmcq.com/sitemap.xml

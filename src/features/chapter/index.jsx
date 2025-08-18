@@ -4,6 +4,7 @@ import { AnimatePresence, motion as Motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 
 import { chapterNames, loadChaptersForSubject, subjectConfig } from '../../components/ChapterClassifications';
+import { Seo, AdSlot } from '@/components';
 import ChapterQuestions from './ChapterQuestions';
 import './ChapterWise.css';
 
@@ -45,8 +46,13 @@ const ChapterWise = () => {
   let currentView = 'subjects';
   if (subject && chapterParams && mode) currentView = 'questions';
   else if (subject) currentView = 'chapters';
+  const isIndexable = currentView === "subjects";
+
 
   return (
+  <>
+  <Seo title="অধ্যায়ভিত্তিক MCQ অনুশীলন – LabMCQ" description="প্রতিটি বিষয় ও অধ্যায়ের SSC MCQ প্রশ্ন একত্রে অনুশীলন করুন বাংলা ব্যাখ্যাসহ।" canonical="https://labmcq.com/chapter-wise" noindex={!isIndexable} />
+  {isIndexable && <AdSlot />}
     <div className="cw-container">
       <AnimatePresence mode="wait">
         {currentView === 'subjects' && <SubjectSelection key="subjects" />}
@@ -60,6 +66,7 @@ const ChapterWise = () => {
         )}
       </AnimatePresence>
     </div>
+  </>
   );
 };
 
@@ -74,6 +81,11 @@ const SubjectSelection = () => {
         <h1 className="cw-hero-title">অধ্যায়ভিত্তিক অনুশীলন</h1>
         <p className="cw-hero-subtitle">বিষয় বেছে নিন → অধ্যায় নির্বাচন করুন → অনুশীলন শুরু করুন।</p>
       </header>
+      <section className="mt-6 text-lg text-gray-700 dark:text-gray-300 space-y-4">
+        <p>প্রতিটি বিষয়ের অধ্যায় আলাদা করে পড়লে জ্ঞান স্পষ্ট হয়, আর MCQ অনুশীলনের ক্ষেত্রে এটি আরও গুরুত্বপূর্ণ। অনেক শিক্ষার্থী পুরো বই পড়ে নিলেও কোন অধ্যায়ে কতটা দক্ষ তা বোঝা কঠিন হয়। অধ্যায়ভিত্তিক অনুশীলন সেই সমস্যার সমাধান করে। LabMCQ-এর এই অংশে প্রতিটি বিষয়ের প্রতিটি অধ্যায়কে আলাদা লিস্টে ভাগ করা হয়েছে যাতে সহজে পছন্দমতো অংশ বেছে নেওয়া যায়।</p>
+        <p>একবার বিষয় নির্বাচন করলে তুমি সংশ্লিষ্ট অধ্যায়গুলোর একটি বড় তালিকা দেখতে পাবে। যেসব অধ্যায়ে বেশি অনুশীলন দরকার সেগুলো চিহ্নিত করে একসাথে প্রশ্ন নির্বাচন করা যায়। আমাদের সিস্টেম দ্রুত লোড হয় এবং প্রতিটি প্রশ্নের নিচে ব্যাখ্যা আছে যাতে প্রয়োজনমতো পুনরায় পড়া যায়। চাইলে সীমিত সময়ে দ্রুত অনুশীলনের মোডও বেছে নিতে পারো।</p>
+        <p>অনুশীলন শুরু করার পর তুমি সহজেই বুঝতে পারবে কোন অধ্যায়ে তোমার আরও মনোযোগ প্রয়োজন। নিয়মিত চর্চার মাধ্যমে দুর্বলতা দূর হয় এবং আত্মবিশ্বাস বাড়ে। ভবিষ্যতে আমরা এই অংশে প্রগ্রেস ট্র্যাকিং এবং অধ্যায়ভিত্তিক বিশ্লেষণ যুক্ত করার পরিকল্পনা করছি, যাতে তোমার শেখার পথ আরও স্পষ্ট হয়। LabMCQ সবসময় শিক্ষার্থীদের চাহিদা অনুযায়ী উন্নত হতে আগ্রহী এবং তোমার পরামর্শকে আমরা গুরুত্ব দিই।</p>
+      </section>
       <Motion.div className="subject-grid" variants={listContainerVariants} initial="hidden" animate="visible">
         {Object.entries(subjectConfig).map(([key, { icon, displayName }]) => (
           <Motion.button

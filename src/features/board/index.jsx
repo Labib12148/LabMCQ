@@ -13,6 +13,7 @@ import {
     findSubjectFromBoardId
 } from './classifications';
 import { setImageBasePath } from '@/utils';
+import { Seo, AdSlot } from '@/components';
 
 const modules = import.meta.glob('/src/data/**/*.json');
 
@@ -40,6 +41,7 @@ const BoardQuestions = () => {
     const [subject, setSubject] = useState(null);
     const [boardId, setBoardId] = useState(null);
     const [mode, setMode] = useState(null);
+    const isIndexable = view === "subjects";
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -205,8 +207,13 @@ const BoardQuestions = () => {
         <div className="w-full min-h-screen flex flex-col items-center p-4 md:p-6 pt-24">
             <div className="w-full max-w-6xl">
                 <Motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="hero-section">
-                    <h1 className="hero-title">বিষয় বাছাই করুন</h1>
+                    <h1 className="hero-title">SSC বোর্ড প্রশ্ন</h1>
                     <p className="hero-subtitle">অনুশীলন অথবা পরীক্ষার জন্য একটি বিষয় বাছাই করুন।</p>
+                    <section className="mt-6 text-lg text-gray-700 dark:text-gray-300 space-y-4">
+                        <p>এসএসসি পরীক্ষায় বোর্ড প্রশ্নের গুরুত্ব খুবই বেশি, কারণ এগুলো বাস্তব পরীক্ষার ধরণ বোঝার সুযোগ দেয়। পূর্ববর্তী বছরের প্রশ্নগুলো বিশ্লেষণ করলে কোন টপিকগুলো বেশি আসে এবং কোন ধরনের MCQ বেশি করা হচ্ছে তা সহজে বোঝা যায়। LabMCQ-তে আমরা সব বোর্ডের প্রশ্ন সংগ্রহ করে একটি সহজ তালিকায় সাজিয়েছি যাতে তোমার মতো শিক্ষার্থীরা আর বিভিন্ন বই বা ওয়েবসাইটে খুঁজে বেড়াতে না হয়।</p>
+                        <p>এই পেজে প্রবেশ করার পর প্রথমেই সব বিষয়ের তালিকা দেখতে পাবে। তোমার কাঙ্ক্ষিত বিষয় নির্বাচন করলে সংশ্লিষ্ট বোর্ডের MCQ প্রশ্নগুলো আলাদা আলাদা ভাগে সাজিয়ে দেওয়া হয়। প্রতিটি প্রশ্নের সাথে ব্যাখ্যা যুক্ত আছে, ফলে শুধুমাত্র উত্তর নয় বরং এর পিছনের ধারণাটিও পরিষ্কার হয়। চাইলে পরীক্ষা মোড চালু করে নির্দিষ্ট সময়ের মধ্যে নিজেকে যাচাই করতে পারো বা শুধুই অনুশীলনের জন্য প্রশ্নগুলো দেখতে পারো।</p>
+                        <p>বোর্ড প্রশ্ন অনুশীলনের মাধ্যমে তুমি নিজের শক্তি ও দুর্বলতা সম্পর্কে স্পষ্ট ধারণা পেতে শুরু করবে। প্রতিদিন নিয়মিত কিছু প্রশ্ন সমাধান করলে প্রস্তুতির অগ্রগতি দেখা যায় এবং পরীক্ষার আগে আত্মবিশ্বাস অনেক বেড়ে যায়। আমরা চেষ্টা করেছি যাতে ইন্টারফেস সহজ হয় এবং মোবাইল বা ডেস্কটপে সমানভাবে ব্যবহার করা যায়। ভবিষ্যতে আরও বোর্ড ও বছরের প্রশ্ন যোগ করা হবে যাতে এই সংগ্রহ আরও সমৃদ্ধ হয় এবং শিক্ষার্থীদের জন্য নির্ভরযোগ্য সহায়ক হয়ে ওঠে।</p>
+                    </section>
                 </Motion.div>
                 
                 <Motion.div 
@@ -235,6 +242,8 @@ const BoardQuestions = () => {
 
     return (
         <>
+            <Seo title="SSC বোর্ড প্রশ্ন অনুশীলন – LabMCQ" description="বিগত বছরের এসএসসি বোর্ড MCQ প্রশ্ন সমাধান ও ব্যাখ্যাসহ অনুশীলন করুন।" canonical="https://labmcq.com/boards" noindex={!isIndexable} />
+            {isIndexable && <AdSlot />}
             <AnimatePresence>
                 {selectedBoard && (
                     <ViewType 
