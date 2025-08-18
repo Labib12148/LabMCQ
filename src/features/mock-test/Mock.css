@@ -1,0 +1,75 @@
+/* Mock Test mobile polish — mirrors Chapter‑Wise look & spacing
+   Drop this at: /src/features/mock-test/Mock.css
+   (It reuses tokens and base utilities from ChapterWise.css) */
+@import '../chapter/ChapterWise.css';
+
+/* ---------- Page wrappers ---------- */
+.cw-container{max-width:1100px;margin:0 auto;padding:clamp(8px,1.8vw,16px)}
+.cw-page{padding:clamp(8px,1.6vw,16px)}
+
+/* Header (centred title like Chapter‑Wise) */
+.cw-header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin:6px 0 12px}
+.cw-header-content{text-align:center}
+.view-title{font-size:clamp(1.25rem,1rem+2vw,2rem);font-weight:900;background:linear-gradient(90deg,#8b5cf6,var(--c-primary),#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.view-subtitle{color:var(--c-text-secondary)}
+
+/* ---------- Subject grid (responsive) ---------- */
+.subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:1024px){.subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.subject-grid{grid-template-columns:1fr}}
+.subject-card{display:grid;gap:10px;justify-items:center;padding:16px;border:1px solid var(--c-border);background:var(--c-card-bg);border-radius:14px;box-shadow:var(--c-shadow);cursor:pointer;transition:border-color .18s,transform .18s}
+.subject-card:hover{border-color:var(--c-primary);transform:translateY(-2px)}
+.subject-icon{font-size:40px;line-height:1}
+.subject-name{font-weight:900}
+
+/* ---------- Chapters grid (mobile first) ---------- */
+.ch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+@media (max-width:1024px){.ch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.ch-grid{grid-template-columns:1fr}}
+.ch-card{position:relative;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--c-border);background:var(--c-card-bg);border-radius:12px;box-shadow:var(--c-shadow);min-height:56px;touch-action:manipulation}
+.ch-card input{accent-color:var(--c-primary)}
+.ch-name{font-weight:900}
+.ch-count{margin-left:auto;opacity:.75;font-weight:800}
+
+/* Toolbar: wraps nicely on small screens */
+.cw-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px solid var(--c-border);background:var(--c-panel);border-radius:16px;box-shadow:var(--c-shadow)}
+.cw-toolbar-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cw-count-control{display:grid;gap:6px}
+.cw-count-label{font-weight:800;color:var(--c-text-secondary)}
+.cw-count-control input[type="number"]{width:90px;text-align:center;font-weight:800;padding:8px 10px;border:1px solid var(--c-border);border-radius:10px;background:var(--c-panel)}
+
+/* Bottom sticky summary (safe‑area aware) */
+.bottom-bar{position:sticky;bottom:0;z-index:40;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--c-border);background:var(--c-card-bg);border-radius:16px;box-shadow:var(--c-shadow)}
+@supports (padding-bottom:env(safe-area-inset-bottom)){.bottom-bar{padding-bottom:calc(12px + env(safe-area-inset-bottom))}}
+.bottom-summary{font-weight:900;opacity:.9}
+.bottom-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-weight:900;background:var(--c-primary);color:var(--c-primary-fg);border:1px solid transparent}
+
+/* ---------- Exam runner (palette + options) ---------- */
+.exam-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 4px;margin:6px 0}
+.exam-sticky{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 10px;background:var(--c-panel);border-bottom:1px solid var(--c-border);backdrop-filter:saturate(1.1) blur(6px)}
+.timer-chip{font-variant-numeric:tabular-nums;border:1px solid var(--c-border);background:var(--c-card-bg);padding:4px 10px;border-radius:10px;font-weight:800}
+.exam-palette{display:flex;gap:6px;overflow-x:auto;padding:2px 0;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.exam-palette button{flex:0 0 auto;width:32px;height:32px;border:1px solid var(--c-border);border-radius:8px;background:var(--c-card-bg);font-weight:800}
+.exam-palette button.is-answered{background:var(--c-primary);color:var(--c-primary-fg);border-color:transparent}
+.exam-palette button.is-current{box-shadow:0 0 0 2px var(--c-primary) inset}
+
+/* MCQ cards */
+.practice-list{display:flex;flex-direction:column;gap:12px}
+.mcq-card{background:var(--c-card-bg);border:1px solid var(--c-border);border-radius:14px;padding:12px;box-shadow:var(--c-shadow)}
+.mcq-header{display:flex;gap:10px;align-items:flex-start}
+.mcq-question-number{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;font-weight:800;border:1px solid var(--c-border)}
+
+/* Options — 1 column on phones, 2 on ≥680px */
+.option-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
+@media (min-width:680px){.option-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.option-button{display:flex;gap:8px;width:100%;padding:10px 12px;min-height:46px;background:var(--c-panel);border:1px solid var(--c-border);border-radius:10px;text-align:left}
+.option-button.selected{border-color:var(--c-primary);box-shadow:0 0 0 2px var(--c-primary)}
+.option-label{width:22px;height:22px;border-radius:999px;display:grid;place-items:center;font-weight:800;border:1px solid var(--c-border);color:var(--c-text-secondary)}
+.option-text{flex:1;min-width:0}
+
+/* Results panel */
+.results-container{background:var(--c-card-bg);border:1px solid var(--c-border);border-radius:16px;padding:16px;box-shadow:var(--c-shadow)}
+
+/* Utilities */
+:where(input,button){font:inherit}
+html,body{max-width:100%;overflow-x:hidden}

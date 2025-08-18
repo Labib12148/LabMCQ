@@ -1,7 +1,7 @@
-// src/Home.jsx
+// src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, BookOpen, Clock, Zap, Star } from 'lucide-react';
+import { Shield, BookOpen, Clock, Zap, Star, ListChecks } from 'lucide-react';
 import { motion as Motion } from 'framer-motion';
 import './Home.css';
 
@@ -86,7 +86,13 @@ const HomePage = () => {
             description="প্রতিটি অধ্যায় আলাদাভাবে চর্চা করো—যে অধ্যায় দুর্বল, সেটাই বেশি বার চর্চা করো।"
             link="/chapter-wise"
           />
-          {/* TODO: Add Mock Test feature */}
+          {/* New: Mock Test */}
+          <ActionCard
+            icon={<ListChecks size={40} className="text-emerald-400" />}
+            title="মক টেস্ট"
+            description="বোর্ডের মতো সময় ধরে মক টেস্ট দিয়ে পূর্ণাঙ্গ মূল্যায়ন করো—বিষয়, প্রশ্ন সংখ্যা ও টাইমার বেছে নাও।"
+            link="/mock-test"
+          />
         </Motion.section>
 
         {/* Why Use Section */}

@@ -12,7 +12,7 @@ import '@/styles/styles.css';
 
 // Data
 // (removed unused: const modules = import.meta.glob('/src/data/**/*.json');)
-import { subjectConfig } from './ChapterClassifications';
+import { subjectConfig } from '../../components/ChapterClassifications';
 
 const letters = ['A', 'B', 'C', 'D'];
 const banglaMap = { A: 'ক', B: 'খ', C: 'গ', D: 'ঘ' };

@@ -7,6 +7,7 @@ import BoardQuestions from '@/features/board';
 import ChapterWise from '@/features/chapter';
 import Error404 from '@/pages/Error404';
 import Error500 from '@/pages/Error500';
+import MockTestIndex from '@/features/mock-test';
 
 import '@/index.css';
 
@@ -42,6 +43,11 @@ function App() {
           <Route path="/chapter-wise" element={<ChapterWise />} />
           <Route path="/chapter-wise/:subject" element={<ChapterWise />} />
           <Route path="/chapter-wise/:subject/:chapters/:mode" element={<ChapterWise />} />
+
+          {/* --- Mock Test Routes --- */}
+          <Route path="/mock-test" element={<MockTestIndex />} />
+          {/** If you later want deep-linking like /mock-test/:subject, you can map it to the same component: */}
+          {/** <Route path="/mock-test/:subject" element={<MockTestIndex />} /> */}
 
           <Route path="/500" element={<Error500 />} />
           <Route path="*" element={<Error404 />} />

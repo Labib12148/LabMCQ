@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion as Motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 
-import { chapterNames, loadChaptersForSubject, subjectConfig } from './ChapterClassifications';
+import { chapterNames, loadChaptersForSubject, subjectConfig } from '../../components/ChapterClassifications';
 import ChapterQuestions from './ChapterQuestions';
 import './ChapterWise.css';
 
