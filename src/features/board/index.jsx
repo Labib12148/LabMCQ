@@ -5,6 +5,7 @@ import { motion as Motion, AnimatePresence } from 'framer-motion';
 import DisplayQuestions from './DisplayQuestions';
 import ExamView from './ExamView';
 import ViewType from './ViewType';
+import Seo from '@/components/Seo';
 import './BoardQuestions.css';
 import {
     subjectConfig,
@@ -235,12 +236,20 @@ const BoardQuestions = () => {
 
     return (
         <>
+            <Seo
+                title="বোর্ড প্রশ্ন"
+                description="বিগত বছরের বোর্ড পরীক্ষার MCQ প্রশ্ন অনুশীলন করুন।"
+                canonical="https://labmcq.example.com/boards"
+                noIndex
+                noAds
+            />
+            <h1 className="sr-only">বোর্ড প্রশ্ন</h1>
             <AnimatePresence>
                 {selectedBoard && (
-                    <ViewType 
-                        board={selectedBoard} 
-                        onSelectMode={handleModeSelect} 
-                        onClose={() => setSelectedBoard(null)} 
+                    <ViewType
+                        board={selectedBoard}
+                        onSelectMode={handleModeSelect}
+                        onClose={() => setSelectedBoard(null)}
                         autoFocus
                     />
                 )}

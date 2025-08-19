@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, CheckSquare, Square, PlayCircle } from 'lucide-react';
 import { subjectConfig } from '../../components/ChapterClassifications';
 import MockTest from './MockTest';
+import Seo from '@/components/Seo';
 import './Mock.css';
 
 /* Load chapters for a subject */
@@ -52,6 +53,14 @@ export default function MockIndex(){
 
   return (
     <div className="cw-container">
+      <Seo
+        title="মক টেস্ট"
+        description="সময় ধরে মক টেস্ট দিয়ে নিজের প্রস্তুতি মূল্যায়ন করুন।"
+        canonical="https://labmcq.example.com/mock-test"
+        noIndex
+        noAds
+      />
+      <h1 className="sr-only">মক টেস্ট</h1>
       {/* SUBJECT PICK */}
       {step==='pick' && (
         <main className="cw-page">

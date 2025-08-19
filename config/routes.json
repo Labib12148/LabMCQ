@@ -1,0 +1,6 @@
+[
+  { "path": "/", "index": true },
+  { "path": "/chapter-wise", "index": true },
+  { "path": "/boards", "index": false },
+  { "path": "/mock-test", "index": false }
+]

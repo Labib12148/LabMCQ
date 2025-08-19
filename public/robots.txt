@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /boards
+Disallow: /mock-test
+Sitemap: https://labmcq.example.com/sitemap.xml
