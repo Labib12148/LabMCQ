@@ -9,14 +9,8 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
 async function readRoutes() {
-  const candidates = [
-    path.join(ROOT, 'src', 'config', 'routes.json'),
-    path.join(ROOT, 'src', 'routes.json'),
-  ];
-  for (const p of candidates) {
-    try { return JSON.parse(await fs.readFile(p, 'utf-8')); } catch {}
-  }
-  throw new Error(`routes.json not found`);
+  const p = path.join(ROOT, 'src', 'config', 'routes.json');
+  return JSON.parse(await fs.readFile(p, 'utf-8'));
 }
 const ROUTES = (await readRoutes()).filter(r => r.index !== false);
 
@@ -81,7 +75,7 @@ async function waitForContent(page, routePath) {
     const el = document.querySelector('#root');
     if (!el) return false;
     const t = el.innerText.replace(/\s+/g,' ').trim();
-    return t.length > 120;
+    return t.length > 200;
   }, { timeout: 15000 }).catch(() => {});
 }
 

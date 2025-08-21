@@ -1,12 +1,6 @@
 [
   { "path": "/", "index": true, "title": "LabMCQ — SSC MCQ Practice" },
-
   { "path": "/boards", "index": true, "title": "বোর্ড প্রশ্ন" },
-
   { "path": "/chapter-wise", "index": true, "title": "অধ্যায়ভিত্তিক" },
-
-  { "path": "/mock-test", "index": true, "title": "মক টেস্ট" },
-
-  { "path": "/500", "index": false },
-  { "path": "/404", "index": false }
+  { "path": "/mock-test", "index": true, "title": "মক টেস্ট" }
 ]
