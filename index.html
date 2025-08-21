@@ -2,13 +2,32 @@
 <html lang="bn">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="./src/assets/logo.svg" />
+    <link rel="icon" href="./src/assets/logo.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- AdSense -->
+    <meta name="google-adsense-account" content="ca-pub-8628863266491036" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8628863266491036" crossorigin="anonymous"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Canonical gets overwritten per-route by prerender -->
+    <link rel="canonical" href="https://labmcq.com" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <title>LabMCQ</title>
   </head>
   <body>
+    <!-- Plain anchors so crawlers see links pre-hydration -->
+    <nav data-prerender-nav aria-label="primary" style="position:absolute;left:-9999px;top:-9999px;">
+      <a href="/chapter-wise">অধ্যায়ভিত্তিক MCQ</a>
+      <a href="/boards">বোর্ড প্রশ্ন</a>
+      <a href="/mock-test">মক টেস্ট</a>
+    </nav>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

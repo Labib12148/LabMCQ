@@ -1,0 +1,2 @@
+/*
+  Content-Security-Policy: frame-ancestors 'self' https://*.google.com https://*.googleusercontent.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net

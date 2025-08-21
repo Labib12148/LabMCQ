@@ -1,25 +1,50 @@
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import path from 'path';
-import routes from '../config/routes.json' assert { type: 'json' };
-import { render } from '../dist/server/entry-server.js';
+import { fileURLToPath } from 'url';
 
-const dist = path.resolve('dist');
-const template = await fs.readFile(path.join(dist, 'index.html'), 'utf8');
-const templateNoTitle = template.replace(/<title>.*?<\/title>/s, '');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '..');
+const DIST = path.join(ROOT, 'dist');
+const BASE_URL = process.env.SITE_BASE_URL || 'https://labmcq.com';
+
+const routes = JSON.parse(
+  await fs.readFile(path.join(ROOT, 'src', 'routes.json'), 'utf-8')
+);
+
+const indexPath = path.join(DIST, 'index.html');
+let template = await fs.readFile(indexPath, 'utf-8');
+
+// Ensure canonical placeholder exists
+if (!template.includes('rel="canonical"')) {
+  template = template.replace(
+    '<head>',
+    `<head><link rel="canonical" href="${BASE_URL}">`
+  );
+  await fs.writeFile(indexPath, template, 'utf-8');
+}
 
 for (const r of routes) {
-  const url = r.path;
-  const { html, head, htmlAttrs, bodyAttrs } = render(url);
-  let page = templateNoTitle.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
-  page = page.replace('<head>', `<head>${head}`);
-  if (htmlAttrs) {
-    page = page.replace('<html lang="bn">', `<html ${htmlAttrs}>`);
+  try {
+    const url = r.path;
+    const rel = url === '/' ? '' : url.replace(/^\//, '');
+    const outFile =
+      url === '/' ? path.join(DIST, 'index.html') : path.join(DIST, rel, 'index.html');
+
+    let html = template
+      .replace(/<link rel="canonical"[^>]*>/g, '')
+      .replace(
+        '<head>',
+        `<head><link rel="canonical" href="${BASE_URL}${url === '/' ? '' : url}">`
+      );
+
+    if (r.title) {
+      html = html.replace(/<title>.*?<\/title>/, `<title>${r.title}</title>`);
+    }
+
+    await fs.mkdir(path.dirname(outFile), { recursive: true });
+    await fs.writeFile(outFile, html, 'utf-8');
+    console.log('Exported', url);
+  } catch (e) {
+    console.error('Prerender failed', r.path, e);
   }
-  if (bodyAttrs) {
-    page = page.replace('<body>', `<body ${bodyAttrs}>`);
-  }
-  const filePath = path.join(dist, url === '/' ? 'index.html' : `${url.replace(/^\//, '')}/index.html`);
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, page);
-  console.log('Prerendered', url);
 }

@@ -12,7 +12,7 @@ export default defineConfig({
     host: true,
     port: 5173,
     strictPort: true,
-    hmr: { clientPort: 443 }
+    hmr: { clientPort: 5173 }
   },
   build: {
     rollupOptions: {
