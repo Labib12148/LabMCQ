@@ -234,16 +234,22 @@ const BoardQuestions = () => {
         </div>
     );
 
+    const isIndexable = pathname === '/boards';
+
     return (
         <>
             <Seo
                 title="বোর্ড প্রশ্ন"
                 description="বিগত বছরের বোর্ড পরীক্ষার MCQ প্রশ্ন অনুশীলন করুন।"
                 canonical="https://labmcq.example.com/boards"
-                noIndex
-                noAds
+                noIndex={!isIndexable}
+                noAds={!isIndexable}
             />
-            <h1 className="sr-only">বোর্ড প্রশ্ন</h1>
+            <noscript>
+                <a href="/chapter-wise">অধ্যায়ভিত্তিক</a>
+                <a href="/boards">বোর্ড প্রশ্ন</a>
+                <a href="/mock-test">মক টেস্ট</a>
+            </noscript>
             <AnimatePresence>
                 {selectedBoard && (
                     <ViewType

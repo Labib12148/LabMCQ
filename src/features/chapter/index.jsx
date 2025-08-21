@@ -59,6 +59,11 @@ const ChapterWise = () => {
         noIndex={!isIndexable}
         noAds={!isIndexable}
       />
+      <noscript>
+        <a href="/chapter-wise">অধ্যায়ভিত্তিক</a>
+        <a href="/boards">বোর্ড প্রশ্ন</a>
+        <a href="/mock-test">মক টেস্ট</a>
+      </noscript>
       <AnimatePresence mode="wait">
         {currentView === 'subjects' && <SubjectSelection key="subjects" />}
         {currentView === 'chapters' && (

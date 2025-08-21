@@ -42,8 +42,6 @@ export default function MockIndex(){
   const [seed,setSeed] = useState(()=>Math.floor(Math.random()*1e9));
 
   const chapters = useChapters(subject);
-  const totalAvailable = useMemo(()=> chapters.reduce((s,c)=>s+c.count,0), [chapters]);
-  const selectedCount = useMemo(()=> chapters.filter(c=> selected.has(c.name)).reduce((s,c)=>s+c.count,0), [chapters,selected]);
 
   const title = useMemo(()=> subject? `${subjectConfig[subject]?.displayName} — মক টেস্ট` : 'মক টেস্ট', [subject]);
 
@@ -57,10 +55,12 @@ export default function MockIndex(){
         title="মক টেস্ট"
         description="সময় ধরে মক টেস্ট দিয়ে নিজের প্রস্তুতি মূল্যায়ন করুন।"
         canonical="https://labmcq.example.com/mock-test"
-        noIndex
-        noAds
       />
-      <h1 className="sr-only">মক টেস্ট</h1>
+      <noscript>
+        <a href="/chapter-wise">অধ্যায়ভিত্তিক</a>
+        <a href="/boards">বোর্ড প্রশ্ন</a>
+        <a href="/mock-test">মক টেস্ট</a>
+      </noscript>
       {/* SUBJECT PICK */}
       {step==='pick' && (
         <main className="cw-page">

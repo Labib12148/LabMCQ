@@ -50,6 +50,11 @@ const HomePage = () => {
         description="SSC পরীক্ষার জন্য বোর্ড প্রশ্ন, অধ্যায়ভিত্তিক অনুশীলন এবং মক টেস্ট।"
         canonical="https://labmcq.example.com/"
       />
+      <noscript>
+        <a href="/chapter-wise">অধ্যায়ভিত্তিক</a>
+        <a href="/boards">বোর্ড প্রশ্ন</a>
+        <a href="/mock-test">মক টেস্ট</a>
+      </noscript>
       <div className="relative z-10">
         {/* Hero Section */}
         <Motion.section

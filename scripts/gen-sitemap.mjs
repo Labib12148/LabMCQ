@@ -7,14 +7,8 @@ const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = process.env.SITE_BASE_URL || 'https://labmcq.com';
 
 async function readRoutes() {
-  const candidates = [
-    path.join(ROOT, 'src', 'config', 'routes.json'),
-    path.join(ROOT, 'src', 'routes.json')
-  ];
-  for (const p of candidates) {
-    try { return JSON.parse(await fs.readFile(p, 'utf-8')); } catch {}
-  }
-  throw new Error(`routes.json not found. Expected at: ${candidates.join(' , ')}`);
+  const p = path.join(ROOT, 'src', 'config', 'routes.json');
+  return JSON.parse(await fs.readFile(p, 'utf-8'));
 }
 const routes = (await readRoutes()).filter(r => r.index !== false);
 
