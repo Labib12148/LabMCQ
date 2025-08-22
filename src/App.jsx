@@ -8,6 +8,8 @@ import ChapterWise from '@/features/chapter';
 import Error404 from '@/pages/Error404';
 import Error500 from '@/pages/Error500';
 import MockTestIndex from '@/features/mock-test';
+import About from '@/pages/About';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
 
 import '@/index.css';
 
@@ -48,6 +50,10 @@ function App() {
           <Route path="/mock-test" element={<MockTestIndex />} />
           {/** If you later want deep-linking like /mock-test/:subject, you can map it to the same component: */}
           {/** <Route path="/mock-test/:subject" element={<MockTestIndex />} /> */}
+
+          {/* --- Static Pages --- */}
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
           <Route path="/500" element={<Error500 />} />
           <Route path="*" element={<Error404 />} />

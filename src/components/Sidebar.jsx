@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Home, Shield, BookOpen, ListChecks, X } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import { Home, Shield, BookOpen, ListChecks, X, Info } from 'lucide-react';
 import './Layout.css'; // Import the final unified CSS
 
 const SidebarLink = ({ to, icon, text }) => (
@@ -48,11 +48,15 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
           <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
           {/* New: Mock Test */}
           <SidebarLink to="/mock-test" icon={<ListChecks size={20} />} text="মক টেস্ট" />
+          <SidebarLink to="/about" icon={<Info size={20} />} text="About" />
           {/* TODO: Add Revision Notes section when content is ready */}
         </nav>
 
         <div className="sidebar-footer">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <Link to="/privacy-policy" className="text-xs text-gray-500 dark:text-gray-400 hover:underline">
+            Privacy Policy
+          </Link>
+          <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} LabMCQ. All rights reserved.
           </p>
         </div>

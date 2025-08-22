@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { subjectConfig } from '../../components/ChapterClassifications';
 import { MathText } from '@/components';
