@@ -207,6 +207,7 @@ const BoardQuestions = () => {
                 <Motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="hero-section">
                     <h1 className="hero-title">বিষয় বাছাই করুন</h1>
                     <p className="hero-subtitle">অনুশীলন অথবা পরীক্ষার জন্য একটি বিষয় বাছাই করুন।</p>
+                    <h2 className="sr-only">বিষয় তালিকা</h2>
                 </Motion.div>
                 
                 <Motion.div 

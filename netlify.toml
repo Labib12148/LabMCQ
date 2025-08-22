@@ -3,6 +3,16 @@
   publish = "dist"
 
 [[redirects]]
+  from = "/*/"
+  to = "/:splat"
+  status = 301
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404

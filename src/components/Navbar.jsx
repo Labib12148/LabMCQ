@@ -39,6 +39,12 @@ const Navbar = ({ setSidebarOpen }) => {
                 </Link>
             </div>
 
+            <nav className="hidden lg:flex items-center gap-6">
+                <Link to="/boards" className="navbar-link">বোর্ড প্রশ্ন</Link>
+                <Link to="/chapter-wise" className="navbar-link">অধ্যায়ভিত্তিক অনুশীলন</Link>
+                <Link to="/mock-test" className="navbar-link">মক টেস্ট</Link>
+            </nav>
+
             <div className="flex items-center gap-3">
                 {/* Theme toggle */}
                 <button

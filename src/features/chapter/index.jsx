@@ -73,6 +73,7 @@ const SubjectSelection = () => {
       <header className="cw-hero">
         <h1 className="cw-hero-title">অধ্যায়ভিত্তিক অনুশীলন</h1>
         <p className="cw-hero-subtitle">বিষয় বেছে নিন → অধ্যায় নির্বাচন করুন → অনুশীলন শুরু করুন।</p>
+        <h2 className="sr-only">বিষয় তালিকা</h2>
       </header>
       <Motion.div className="subject-grid" variants={listContainerVariants} initial="hidden" animate="visible">
         {Object.entries(subjectConfig).map(([key, { icon, displayName }]) => (
