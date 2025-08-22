@@ -9,8 +9,6 @@ import Error404 from '@/pages/Error404';
 import Error500 from '@/pages/Error500';
 import MockTestIndex from '@/features/mock-test';
 
-import '@/index.css';
-
 const AppLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   return (
