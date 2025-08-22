@@ -108,7 +108,7 @@ const BoardQuestions = () => {
             setSelectedBoard(null);
         }
     };
-    const goBackToSubjects = () => navigate('/boards/');
+    const goBackToSubjects = () => navigate('/boards');
     const goBackToBoards = () => { if (subject) navigate(`/${subject}-boards`); };
 
     const filteredBoardGroups = useMemo(() => {

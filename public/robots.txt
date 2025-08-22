@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://labmcq.com/sitemap.xml

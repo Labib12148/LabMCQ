@@ -5,10 +5,7 @@ import './Layout.css';
 import Logo from '@/assets/logo2.png';
 
 const Navbar = ({ setSidebarOpen }) => {
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        const stored = localStorage.getItem('theme');
-        return stored ? stored === 'dark' : true;
-    });
+    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
 
     const toggleTheme = () => {
         setIsDarkMode(prevMode => !prevMode);

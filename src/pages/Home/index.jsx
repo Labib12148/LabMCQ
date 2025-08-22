@@ -74,25 +74,25 @@ const HomePage = () => {
           animate="visible"
           variants={containerVariants}
         >
-            <ActionCard
-              icon={<Shield size={40} className="text-blue-400" />}
-              title="বোর্ড প্রশ্ন"
-              description="SSC-তে আসা বিগত বছরের বোর্ড প্রশ্ন দিয়ে নিজের প্রস্তুতি পরীক্ষা করো।"
-              link="/boards/"
-            />
-            <ActionCard
-              icon={<BookOpen size={40} className="text-purple-400" />}
-              title="অধ্যায়ভিত্তিক অনুশীলন"
-              description="প্রতিটি অধ্যায় আলাদাভাবে চর্চা করো—যে অধ্যায় দুর্বল, সেটাই বেশি বার চর্চা করো।"
-              link="/chapter-wise/"
-            />
+          <ActionCard
+            icon={<Shield size={40} className="text-blue-400" />}
+            title="বোর্ড প্রশ্ন"
+            description="SSC-তে আসা বিগত বছরের বোর্ড প্রশ্ন দিয়ে নিজের প্রস্তুতি পরীক্ষা করো।"
+            link="/boards"
+          />
+          <ActionCard
+            icon={<BookOpen size={40} className="text-purple-400" />}
+            title="অধ্যায়ভিত্তিক অনুশীলন"
+            description="প্রতিটি অধ্যায় আলাদাভাবে চর্চা করো—যে অধ্যায় দুর্বল, সেটাই বেশি বার চর্চা করো।"
+            link="/chapter-wise"
+          />
           {/* New: Mock Test */}
-            <ActionCard
-              icon={<ListChecks size={40} className="text-emerald-400" />}
-              title="মক টেস্ট"
-              description="বোর্ডের মতো সময় ধরে মক টেস্ট দিয়ে পূর্ণাঙ্গ মূল্যায়ন করো—বিষয়, প্রশ্ন সংখ্যা ও টাইমার বেছে নাও।"
-              link="/mock-test/"
-            />
+          <ActionCard
+            icon={<ListChecks size={40} className="text-emerald-400" />}
+            title="মক টেস্ট"
+            description="বোর্ডের মতো সময় ধরে মক টেস্ট দিয়ে পূর্ণাঙ্গ মূল্যায়ন করো—বিষয়, প্রশ্ন সংখ্যা ও টাইমার বেছে নাও।"
+            link="/mock-test"
+          />
         </Motion.section>
 
         {/* Why Use Section */}
@@ -120,31 +120,13 @@ const HomePage = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-            <Link to="/boards/" className="cta-button text-xl px-10 py-4">
+          <Link to="/boards" className="cta-button text-xl px-10 py-4">
             <Zap size={24} className="inline-block mr-2" />
             <span>বোর্ড প্রশ্নে যাও</span>
           </Link>
         </Motion.section>
       </div>
-        <footer className="mt-16 text-center space-x-6">
-          <a
-            href="https://facebook.com/labmcq"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Facebook
-          </a>
-          <a
-            href="https://twitter.com/labmcq"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Twitter
-          </a>
-        </footer>
-      </main>
+    </main>
   );
 };
 

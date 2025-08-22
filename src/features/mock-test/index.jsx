@@ -42,7 +42,10 @@ export default function MockIndex(){
 
   const chapters = useChapters(subject);
 
-  const title = useMemo(()=> subject? `${subjectConfig[subject]?.displayName} — মক টেস্ট` : 'মক টেস্ট', [subject]);
+  const title = useMemo(
+    () => (subject ? `${subjectConfig[subject]?.displayName} — মক টেস্ট` : 'মক টেস্ট'),
+    [subject]
+  );
 
   const toggle = (name)=> setSelected(prev=>{ const n=new Set(prev); if(n.has(name)) n.delete(name); else n.add(name); return n; });
   const selectAll = ()=> setSelected(new Set(chapters.map(c=>c.name)));

@@ -22,7 +22,7 @@ export default function ResultMCQItem({ question, userAnswer, index }){
             <div className="result-meta">আপনার উত্তর: <strong>{map[userAnswer]}</strong> • সঠিক: <strong>{map[question.answer]}</strong></div>
           )}
           <MathText text={question.question} />
-          {question.image && <img className="question-image mt-2" src={getAssetPath(question.image)} alt="Question" loading="lazy" />}
+          {question.image && <img className="question-image mt-2" src={getAssetPath(question.image)} alt="Question" />}
         </div>
       </div>
 
@@ -32,7 +32,7 @@ export default function ResultMCQItem({ question, userAnswer, index }){
             <div className="option-label-circle">{["ক","খ","গ","ঘ"][idx]}</div>
             <div className="option-text">
               <MathText text={question[`option${L}`]} />
-              {question[`option${L}_img`] && <img className="option-image mt-2" alt={`Option ${L}`} src={getAssetPath(question[`option${L}_img`])} loading="lazy" />}
+              {question[`option${L}_img`] && <img className="option-image mt-2" alt={`Option ${L}`} src={getAssetPath(question[`option${L}_img`])} />}
               {userAnswer===L && !correct && <span className="badge-your">আপনার উত্তর</span>}
               {L===question.answer && !correct && <span className="badge-correct">সঠিক উত্তর</span>}
             </div>

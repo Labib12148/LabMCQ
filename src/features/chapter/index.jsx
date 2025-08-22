@@ -176,7 +176,7 @@ const ChapterSelection = ({ subject }) => {
       transition={pageTransition}
     >
       <header className="cw-header">
-        <button className="back-button" onClick={() => navigate('/chapter-wise/')}>
+        <button className="back-button" onClick={() => navigate('/chapter-wise')}>
           <ArrowLeft size={18} />
           <span>সকল বিষয়</span>
         </button>

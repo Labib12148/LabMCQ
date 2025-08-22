@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ ssrBuild }) => ({
+export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,9 +15,15 @@ export default defineConfig(({ ssrBuild }) => ({
     hmr: { clientPort: 443 }
   },
   build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          katex: ['katex'],
+          motion: ['framer-motion'],
+        }
+      }
+    },
     chunkSizeWarningLimit: 900
-  },
-  ssr: {
-    noExternal: ['react-katex']
   }
-}))
+})

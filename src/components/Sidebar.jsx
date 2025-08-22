@@ -44,10 +44,10 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
         <nav className="sidebar-nav">
           <SidebarLink to="/" icon={<Home size={20} />} text="ড্যাশবোর্ড" />
-            <SidebarLink to="/boards/" icon={<Shield size={20} />} text="বোর্ড প্রশ্ন" />
-            <SidebarLink to="/chapter-wise/" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
-            {/* New: Mock Test */}
-            <SidebarLink to="/mock-test/" icon={<ListChecks size={20} />} text="মক টেস্ট" />
+          <SidebarLink to="/boards" icon={<Shield size={20} />} text="বোর্ড প্রশ্ন" />
+          <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
+          {/* New: Mock Test */}
+          <SidebarLink to="/mock-test" icon={<ListChecks size={20} />} text="মক টেস্ট" />
           {/* TODO: Add Revision Notes section when content is ready */}
         </nav>
 
