@@ -5,7 +5,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 dark:bg-[#111827] text-gray-900 dark:text-gray-200;
+    @apply bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-200;
     font-family: 'Noto Sans Bengali', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
