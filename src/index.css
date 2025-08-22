@@ -17,6 +17,22 @@
     font-family: 'Noto Sans Bengali', sans-serif;
     font-weight: 700;
   }
+
+  a {
+    @apply text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 underline-offset-2 hover:underline;
+  }
+
+  h1 {
+    @apply text-3xl mb-4;
+  }
+
+  h2 {
+    @apply text-2xl mb-3;
+  }
+
+  h3 {
+    @apply text-xl mb-2;
+  }
 }
 
 /* --- Custom Scrollbar for a seamless look --- */
