@@ -17,19 +17,26 @@ if (typeof globalThis.localStorage === 'undefined') {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const template = fs.readFileSync(path.resolve(__dirname, '../dist/index.html'), 'utf-8');
 
-for (const { path: route, title } of routes) {
+for (const { path: route, title, noindex } of routes) {
   const appHtml = render(route);
   let html = template.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
+  const canonical = route === '/' ? 'https://labmcq.com/' : `https://labmcq.com${route}/`;
   html = html.replace(
     /<link rel="canonical" href="https:\/\/labmcq.com\/" \/>/,
-    `<link rel="canonical" href="https://labmcq.com${route}" />`
+    `<link rel="canonical" href="${canonical}" />`
   );
   html = html.replace(/<title>.*<\/title>/, `<title>${title}</title>`);
+  if (noindex) {
+    html = html.replace(
+      '<meta name="robots" content="index, follow" />',
+      '<meta name="robots" content="noindex, nofollow" />'
+    );
+  }
 
   const filePath = path.resolve(
     __dirname,
     '../dist',
-    route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`
+    route === '/' ? 'index.html' : route === '/404' ? '404.html' : `${route.replace(/^\//, '')}/index.html`
   );
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, html);
@@ -41,7 +48,12 @@ const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   routes
-    .map(({ path: r }) => `  <url><loc>${baseUrl}${r}</loc><lastmod>${lastmod}</lastmod></url>`)
+    .filter(({ noindex }) => !noindex)
+    .map(({ path: r }) => {
+      const loc = r === '/' ? `${baseUrl}/` : `${baseUrl}${r}/`;
+      return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod></url>`;
+    })
     .join('\n') +
   '\n</urlset>\n';
 fs.writeFileSync(path.resolve(__dirname, '../dist/sitemap.xml'), sitemap);
+

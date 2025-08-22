@@ -54,7 +54,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
         <div className="mcq-question-number">{index.toLocaleString('bn-BD')}</div>
         <div className="mcq-question-text">
           <MathText text={mcq.question} />
-          {mcq.image && <img src={getAssetPath(mcq.image)} alt="Question" className="question-image" />}
+          {mcq.image && <img src={getAssetPath(mcq.image)} alt="Question" className="question-image" loading="lazy" />}
         </div>
       </div>
 
@@ -73,7 +73,7 @@ const MCQItem = ({ mcq, index, onAnswer, selectedOption, mode }) => {
             <div className={textWrapClasses}>
               <MathText text={mcq[`option${opt}`]} />
               {mcq[`option${opt}_img`] && (
-                <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image" />
+                <img src={getAssetPath(mcq[`option${opt}_img`])} alt={`Option ${opt}`} className="option-image" loading="lazy" />
               )}
             </div>
           </button>
