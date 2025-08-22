@@ -14,7 +14,7 @@ import '@/index.css';
 const AppLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="relative flex min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="relative flex min-h-screen transition-colors duration-300">
       <Navbar setSidebarOpen={setSidebarOpen} />
       <div className="flex flex-1 fixed top-[64px] left-0 right-0 h-[calc(100vh-64px)]">
         <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
