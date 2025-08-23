@@ -32,7 +32,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         } lg:translate-x-0`}
       >
         <div className="sidebar-header">
-          <h1 className="sidebar-title">LabMCQ</h1>
+          <p className="sidebar-title">LabMCQ</p>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden navbar-button"
