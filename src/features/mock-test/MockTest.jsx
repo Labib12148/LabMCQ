@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { subjectConfig } from '../../components/ChapterClassifications';
 import { MathText } from '@/components';
@@ -125,7 +125,7 @@ export default function MockTest({ subject, chapters, count=50, minutes=0, seed=
                   <div className="mcq-question-text">
                     <MathText text={q.question} />
                     {q.image && (
-                      <div className="media-wrap"><img className="question-image" src={getAssetPath(q.image)} alt="Question" loading="lazy" /></div>
+                      <div className="media-wrap"><img className="question-image" src={getAssetPath(q.image)} alt="Question illustration" loading="lazy" width="600" height="400" /></div>
                     )}
                   </div>
                 </div>
@@ -135,7 +135,7 @@ export default function MockTest({ subject, chapters, count=50, minutes=0, seed=
                       <span className="option-label">{BN[i]}</span>
                       <div className="option-text">
                         <MathText text={q[`option${L}`]} />
-                        {q[`option${L}_img`] && (<div className="media-wrap"><img className="option-image" src={getAssetPath(q[`option${L}_img`])} alt={`Option ${L}`} loading="lazy" /></div>)}
+                        {q[`option${L}_img`] && (<div className="media-wrap"><img className="option-image" src={getAssetPath(q[`option${L}_img`])} alt={`Option ${L} illustration`} loading="lazy" width="600" height="400" /></div>)}
                       </div>
                     </button>
                   ))}
@@ -174,7 +174,7 @@ export default function MockTest({ subject, chapters, count=50, minutes=0, seed=
                     <div className="mcq-question-text">
                       <div className={`pill ${!your? 'pill-muted': (ok? 'pill-ok':'pill-err')}`}>{!your? 'উত্তর দেওয়া হয়নি': (ok? 'সঠিক':'ভুল')}</div>
                       <MathText text={q.question} />
-                      {q.image && <img className="question-image mt-2" src={getAssetPath(q.image)} alt="Question" />}
+                      {q.image && <img className="question-image mt-2" src={getAssetPath(q.image)} alt="Question illustration" loading="lazy" width="600" height="400" />}
                     </div>
                   </div>
 
@@ -186,7 +186,7 @@ export default function MockTest({ subject, chapters, count=50, minutes=0, seed=
                           <div className="option-label-circle">{BN[i]}</div>
                           <div className="option-text">
                             <MathText text={q[`option${L}`]} />
-                            {q[`option${L}_img`] && <img className="option-image mt-2" alt={`Option ${L}`} src={getAssetPath(q[`option${L}_img`])} />}
+                            {q[`option${L}_img`] && <img className="option-image mt-2" alt={`Option ${L} illustration`} src={getAssetPath(q[`option${L}_img`])} loading="lazy" width="600" height="400" />}
                             {chosen && !isCorrect && <span className="badge-your">আপনার উত্তর</span>}
                             {isCorrect && !ok && <span className="badge-correct">সঠিক উত্তর</span>}
                           </div>

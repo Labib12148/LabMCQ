@@ -41,9 +41,6 @@ export default function MockIndex(){
   const [seed,setSeed] = useState(()=>Math.floor(Math.random()*1e9));
 
   const chapters = useChapters(subject);
-  const totalAvailable = useMemo(()=> chapters.reduce((s,c)=>s+c.count,0), [chapters]);
-  const selectedCount = useMemo(()=> chapters.filter(c=> selected.has(c.name)).reduce((s,c)=>s+c.count,0), [chapters,selected]);
-
   const title = useMemo(()=> subject? `${subjectConfig[subject]?.displayName} — মক টেস্ট` : 'মক টেস্ট', [subject]);
 
   const toggle = (name)=> setSelected(prev=>{ const n=new Set(prev); if(n.has(name)) n.delete(name); else n.add(name); return n; });

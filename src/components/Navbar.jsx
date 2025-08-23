@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Layout.css';
-import Logo from '@/assets/logo2.png';
+import Logo from '@/assets/logo.svg';
 
 const Navbar = ({ setSidebarOpen }) => {
     const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
@@ -34,8 +34,8 @@ const Navbar = ({ setSidebarOpen }) => {
                 </button>
 
                 <Link to="/" className="navbar-logo flex items-center gap-2">
-                <img src={Logo} alt="LabMCQ" className="h-7 w-auto inline-block select-none" draggable="false" />
-                <span>LabMCQ</span>
+                <img src={Logo} alt="LabMCQ logo" width="28" height="28" loading="lazy" className="h-7 w-auto inline-block select-none" draggable="false" />
+                <span><strong>LabMCQ</strong></span>
                 </Link>
             </div>
 
