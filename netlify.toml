@@ -2,7 +2,29 @@
   command = "npm run build"
   publish = "dist"
 
+# Redirect trailing slashes to their non-slash counterparts
+[[redirects]]
+  from = "/:path/"
+  to = "/:path"
+  status = 301
+  force = true
+
+# Serve custom 404 page with proper status code
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+# Single page application fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
