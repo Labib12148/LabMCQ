@@ -32,7 +32,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         } lg:translate-x-0`}
       >
         <div className="sidebar-header">
-          <h1 className="sidebar-title">LabMCQ</h1>
+          <p className="sidebar-title"><strong>LabMCQ</strong></p>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden navbar-button"
@@ -43,7 +43,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         </div>
 
         <nav className="sidebar-nav">
-          <SidebarLink to="/" icon={<Home size={20} />} text="ড্যাশবোর্ড" />
+          <SidebarLink to="/" icon={<Home size={20} />} text="ড্যাশবোর্ড হোম" />
           <SidebarLink to="/boards" icon={<Shield size={20} />} text="বোর্ড প্রশ্ন" />
           <SidebarLink to="/chapter-wise" icon={<BookOpen size={20} />} text="অধ্যায়ভিত্তিক অনুশীলন" />
           {/* New: Mock Test */}
@@ -53,7 +53,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
         <div className="sidebar-footer">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            &copy; {new Date().getFullYear()} LabMCQ. All rights reserved.
+            &copy; {new Date().getFullYear()} <strong>LabMCQ</strong>. All rights reserved.
           </p>
         </div>
       </aside>

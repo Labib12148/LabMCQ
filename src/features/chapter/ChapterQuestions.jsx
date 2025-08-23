@@ -73,9 +73,11 @@ const SmartImage = ({ src, alt, className, baseDir }) => {
     <img
       key={activeSrc}
       src={activeSrc}
-      alt={alt || ''}
+      alt={alt || 'Question related illustration'}
       className={className}
       loading="lazy"
+      width="600"
+      height="400"
       onError={handleError}
       referrerPolicy="no-referrer"
     />

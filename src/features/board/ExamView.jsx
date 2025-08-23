@@ -118,8 +118,10 @@ function MCQItem({ q, index, selected, onSelect }) {
               <img
                 className="question-image"
                 src={getAssetPath(q.image)}
-                alt="Question"
+                alt="Question illustration"
                 loading="lazy"
+                width="600"
+                height="400"
               />
             </div>
           )}
@@ -146,8 +148,10 @@ function MCQItem({ q, index, selected, onSelect }) {
                   <img
                     className="option-image"
                     src={getAssetPath(q[`option${L}_img`])}
-                    alt={`Option ${L}`}
+                    alt={`Option ${L} illustration`}
                     loading="lazy"
+                    width="600"
+                    height="400"
                   />
                 </div>
               )}
