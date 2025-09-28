@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { MathText } from "@/components";
-import { getAssetPath } from "@/utils";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // eslint-disable-line no-unused-vars
-import "@/styles/styles.css";
-import "./ExamView.css";
+import { MathText } from "@/components";
+import { useCountdown } from "@/hooks";
+import { getAssetPath } from "@/utils";
 import ResultMCQItem from "./ResultMCQItem";
 
 // utils
@@ -11,32 +10,6 @@ const bn = (n) => n.toLocaleString("bn-BD");
 const bnOpt = ["ক", "খ", "গ", "ঘ"];
 const fmt = (s) =>
   `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-
-function useCountdown(initialSeconds, onFinish) {
-  const [left, setLeft] = useState(initialSeconds || 0);
-  const [running, setRunning] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    if (!running) return;
-    ref.current = setInterval(() => {
-      setLeft((t) => {
-        if (t <= 1) {
-          clearInterval(ref.current);
-          onFinish && onFinish();
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
-    return () => clearInterval(ref.current);
-  }, [running, onFinish]);
-  const start = useCallback((sec) => {
-    setLeft(sec);
-    setRunning(true);
-  }, []);
-  const stop = useCallback(() => setRunning(false), []);
-  return { left, start, stop, running };
-}
 
 // ──────────────────────────────────────────────────────────────────────────────
 function StartScreen({ title, onStart }) {

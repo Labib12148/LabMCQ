@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { subjectConfig } from '../../components/ChapterClassifications';
 import { MathText } from '@/components';
+import { subjectConfig } from '@/config/subjectConfig';
 import { getAssetPath } from '@/utils';
-import './Mock.css';
 
 /* —— util —— */
 const bnDigits = (n)=> n.toLocaleString('bn-BD');

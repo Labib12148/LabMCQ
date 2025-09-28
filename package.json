@@ -4,20 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite --host",
-  "build": "vite build",
-  "preview": "vite preview",
-
-  "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-  "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\"",
-
-  "type-check": "tsc --noEmit",
-  "clean": "rimraf dist node_modules/.vite",
-
-  "analyze": "vite build --mode analyze"
- },
-
-
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist node_modules/.vite",
+    "analyze": "vite build --mode analyze"
+  },
   "dependencies": {
     "better-react-mathjax": "^2.3.0",
     "framer-motion": "^12.23.12",

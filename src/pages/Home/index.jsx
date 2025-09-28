@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, BookOpen, Clock, Zap, Star, ListChecks } from 'lucide-react';
 import { motion as Motion } from 'framer-motion';
-import './Home.css';
 
 const containerVariants = {
   hidden: { opacity: 0 },

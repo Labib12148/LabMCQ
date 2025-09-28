@@ -2,17 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2, Search } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
-import DisplayQuestions from './DisplayQuestions';
-import ExamView from './ExamView';
-import ViewType from './ViewType';
-import './BoardQuestions.css';
+import DisplayQuestions from './components/DisplayQuestions';
+import ExamView from './components/ExamView';
+import ViewType from './components/ViewType';
+import { subjectConfig } from '@/config/subjectConfig';
 import {
-    subjectConfig,
     generateBoardList,
     parseUrlState,
-    findSubjectFromBoardId
-} from './classifications';
-import { setImageBasePath } from '@/utils';
+    findSubjectFromBoardId,
+    setImageBasePath,
+} from '@/utils';
 
 const modules = import.meta.glob('/src/data/**/*.json');
 

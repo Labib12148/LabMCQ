@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import './Layout.css';
-import Logo from '@/assets/logo2.png';
+import Logo from '@/assets/images/logo2.png';
 
 const Navbar = ({ setSidebarOpen }) => {
     const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');

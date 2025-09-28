@@ -6,13 +6,7 @@ import seedrandom from 'seedrandom';
 // Shared components & utils
 import { MathText } from '@/components';
 import { getAssetPath } from '@/utils';
-
-// Styles (same path as DisplayQuestions)
-import '@/styles/styles.css';
-
-// Data
-// (removed unused: const modules = import.meta.glob('/src/data/**/*.json');)
-import { subjectConfig } from '../../components/ChapterClassifications';
+import { subjectConfig } from '@/config/subjectConfig';
 
 const letters = ['A', 'B', 'C', 'D'];
 const banglaMap = { A: 'ক', B: 'খ', C: 'গ', D: 'ঘ' };

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Shield, BookOpen, ListChecks, X } from 'lucide-react';
-import './Layout.css'; // Import the final unified CSS
 
 const SidebarLink = ({ to, icon, text }) => (
   <NavLink

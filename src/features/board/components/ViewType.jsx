@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BookOpen, Edit, Eye } from 'lucide-react';
 import { motion as Motion } from 'framer-motion';
-import './ViewType.css';
 
 // Animation variants for the overlay
 const modalOverlayVariants = {

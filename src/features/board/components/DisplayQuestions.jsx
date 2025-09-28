@@ -3,7 +3,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { CheckCircle, HelpCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { MathText } from '@/components';
-import '@/styles/styles.css';
 import { getAssetPath } from '@/utils';
 
 // Animations

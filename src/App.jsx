@@ -2,14 +2,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Navbar, Sidebar, ScrollTop } from '@/components';
-import HomePage from '@/pages/Home';
+import { HomePage, Error404, Error500 } from '@/pages';
 import BoardQuestions from '@/features/board';
 import ChapterWise from '@/features/chapter';
-import Error404 from '@/pages/Error404';
-import Error500 from '@/pages/Error500';
 import MockTestIndex from '@/features/mock-test';
-
-import '@/index.css';
 
 const AppLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Bengali:wght@300;400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 dark:bg-[#111827] text-gray-900 dark:text-gray-200;
+    font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: var(--page-bg, #f6f7fb);
+    color: var(--ui-text, #111827);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+    font-weight: 700;
+  }
+}
+
+:lang(bn),
+[lang='bn'] {
+  font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+}
+
+:lang(bn) .mcq-question-text,
+:lang(bn) .option-text,
+:lang(bn) .explanation-body {
+  line-height: 1.7;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6366f1;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a855f7;
+}
